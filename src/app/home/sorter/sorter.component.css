@@ -1,0 +1,18 @@
+.categories {
+  max-width: 684px;
+  margin: 64px auto;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  scroll-behavior: smooth;
+  gap: 24px;
+  overflow-y: auto;
+}
+.categories > li {
+  border-radius: 30px;
+  padding: 8px 16px 8px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

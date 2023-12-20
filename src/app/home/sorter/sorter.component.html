@@ -1,1 +1,13 @@
-<p>sorter works!</p>
+<div class="container-categories">
+  <ul class="categories">
+    <li
+      *ngFor="let item of sorterItems"
+      [ngStyle]="{
+        color: item.text_color,
+        'background-color': item.background_color
+      }"
+    >
+      {{ item.title }}
+    </li>
+  </ul>
+</div>

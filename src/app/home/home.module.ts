@@ -5,8 +5,7 @@ import { SorterComponent } from './sorter/sorter.component';
 import { CardsComponent } from './cards/cards.component';
 import { CardComponent } from './card/card.component';
 import { SliderComponent } from './slider/slider.component';
-
-
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [
@@ -14,10 +13,8 @@ import { SliderComponent } from './slider/slider.component';
     SorterComponent,
     CardsComponent,
     CardComponent,
-    SliderComponent
+    SliderComponent,
   ],
-  imports: [
-    CommonModule
-  ]
+  imports: [CommonModule, CoreModule],
 })
-export class HomeModule { }
+export class HomeModule {}
