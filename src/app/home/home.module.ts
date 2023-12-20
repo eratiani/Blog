@@ -6,6 +6,8 @@ import { CardsComponent } from './cards/cards.component';
 import { CardComponent } from './card/card.component';
 import { SliderComponent } from './slider/slider.component';
 import { CoreModule } from '../core/core.module';
+import { CardContentComponent } from './card-content/card-content.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,8 @@ import { CoreModule } from '../core/core.module';
     CardsComponent,
     CardComponent,
     SliderComponent,
+    CardContentComponent,
   ],
-  imports: [CommonModule, CoreModule],
+  imports: [CommonModule, CoreModule, RouterModule],
 })
 export class HomeModule {}

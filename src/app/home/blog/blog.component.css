@@ -5,6 +5,7 @@
 .sector--blog {
   display: flex;
   justify-content: space-between;
+  margin-top: 64px;
 }
 .blog--title {
   font-size: 64px;

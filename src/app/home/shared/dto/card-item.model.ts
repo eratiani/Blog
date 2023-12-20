@@ -4,13 +4,12 @@ export interface ICardItem {
   description: string;
   image: string;
   publish_date: string;
-  categories: [
-    {
-      id: number;
-      name: string;
-      text_color: string;
-      background_color: string;
-    }
-  ];
+  categories: ICategories[];
   author: string;
+}
+interface ICategories {
+  id: number;
+  name: string;
+  text_color: string;
+  background_color: string;
 }
