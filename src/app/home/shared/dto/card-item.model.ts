@@ -13,3 +13,6 @@ interface ICategories {
   text_color: string;
   background_color: string;
 }
+export interface IcardWithEmail extends ICardItem {
+  email: string;
+}

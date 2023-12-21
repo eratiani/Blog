@@ -1,1 +1,60 @@
-<p>card-content works!</p>
+<app-header></app-header>
+<div class="container--page">
+  <div class="container--card-content">
+    <a [routerLink]="'../'" class="card--content--return--btn"
+      ><img src="../../../assets/arrow-left-black.png" alt="return arrow"
+    /></a>
+    <div class="container--card-content--inner">
+      <div class="container--image">
+        <img src="{{ currentCard.image }}" alt="image" class="card--image" />
+      </div>
+      <h3 class="card--author">{{ currentCard.author }}</h3>
+      <p class="card--date--email">
+        {{ currentCard.publish_date | date : "dd.MM.yyyy" }}
+        <span class="dot">.</span>
+        {{ currentCard.email }}
+      </p>
+      <h2 class="card--title">{{ currentCard.title }}</h2>
+      <div class="card--category--container">
+        <span
+          class="card--category"
+          *ngFor="let category of currentCard.categories"
+          [ngStyle]="{
+            color: category.text_color,
+            'background-color': category.background_color
+          }"
+          >{{ category.name }}</span
+        >
+      </div>
+      <p class="card--description">{{ currentCard.description }}</p>
+    </div>
+  </div>
+
+  <div class="container--slider">
+    <div class="container--arrows">
+      <h3 class="slider--title">მსგავსი სტატიები</h3>
+      <div class="slider--arrows">
+        <div class="left--arrow--wrapper">
+          <img
+            src="../../../assets/Arrow next.png"
+            alt="arrow left"
+            class="left--arrow"
+          />
+        </div>
+        <div class="right--arrow--wrapper">
+          <img
+            src="../../../assets/Arrow next.png"
+            alt="arrow right"
+            class="right--arrow"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="slider--wrapper">
+      <app-slider
+        *ngFor="let card of currentCards"
+        [currentCard]="card"
+      ></app-slider>
+    </div>
+  </div>
+</div>
