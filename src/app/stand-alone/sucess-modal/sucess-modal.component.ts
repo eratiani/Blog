@@ -1,9 +1,22 @@
-import { Component } from '@angular/core';
-
+import { Component, Inject } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { ButtonComponent } from '../button/button.component';
 @Component({
   selector: 'app-sucess-modal',
   templateUrl: './sucess-modal.component.html',
   styleUrls: ['./sucess-modal.component.css'],
   standalone: true,
+  imports: [MatDialogModule, ButtonComponent],
 })
-export class SucessModalComponent {}
+export class SucessModalComponent {
+  constructor(public dialogRef: MatDialogRef<SucessModalComponent>) {}
+
+  closePopup() {
+    this.dialogRef.close();
+  }
+}

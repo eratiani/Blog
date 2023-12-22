@@ -1,0 +1,30 @@
+<div class="container--authentication">
+  <div class="close--x--wrapper">
+    <span class="close--x" mat-dialog-close>x</span>
+  </div>
+
+  <h2 class="authentication--text">შესვლა</h2>
+  <div class="form-group">
+    <label class="form-label">ელ-ფოსტა</label>
+    <input type="text" class="textbox" required />
+  </div>
+  <div class="authentication--error--wrapper">
+    <div class="authentication--error--img-wrapper">
+      <img
+        class="authentication--error--img"
+        src="../../../assets/error-email.png"
+        alt="error"
+      />
+    </div>
+    <p *ngIf="!isValid" class="authentication--error">ელ-ფოსტა არ მოიძებნა</p>
+  </div>
+  <div>
+    <button
+      (click)="OpenSuccessModal()"
+      (click)="closePopup()"
+      class="authentication--ok"
+    >
+      კარგი
+    </button>
+  </div>
+</div>
