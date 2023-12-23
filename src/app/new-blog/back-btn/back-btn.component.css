@@ -1,0 +1,13 @@
+.form--content--return--btn {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 24px;
+  background-color: #e4e3eb;
+}
+.form--content--return--btn > img {
+  max-width: 100%;
+}

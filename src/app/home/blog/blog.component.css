@@ -10,11 +10,13 @@
 .blog--title {
   font-size: 64px;
   color: #1a1a1f;
+  margin-top: 128px;
   padding-left: 13px;
 }
 .blog--img--wrapper {
   max-width: 624px;
   max-height: 200px;
+  margin-top: 64px;
 }
 .blog--img--wrapper > img {
   width: 100%;

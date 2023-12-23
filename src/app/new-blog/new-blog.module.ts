@@ -2,16 +2,30 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreateBlogComponent } from './create-blog/create-blog.component';
 import { BackBtnComponent } from './back-btn/back-btn.component';
-
-
-
+import { RouterModule } from '@angular/router';
+import { CoreModule } from '../core/core.module';
+import { NewBlogFormViewComponent } from './new-blog-form-view/new-blog-form-view.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 @NgModule({
   declarations: [
     CreateBlogComponent,
-    BackBtnComponent
+    BackBtnComponent,
+    NewBlogFormViewComponent,
   ],
   imports: [
-    CommonModule
-  ]
+    CommonModule,
+    RouterModule,
+    CoreModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+  ],
+  exports: [],
 })
-export class NewBlogModule { }
+export class NewBlogModule {}

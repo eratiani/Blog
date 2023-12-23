@@ -1,1 +1,102 @@
-<p>create-blog works!</p>
+<form action="">
+  <div
+    class="image-upload-container"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+  >
+    <p class="upload--title">ატვირთეთ ფოტო</p>
+    <label *ngIf="!image" class="image-upload-input" for="img--input">
+      <div class="input--img--wrapper">
+        <img src="../../../assets/folder-add.png" alt="folder" />
+      </div>
+      <p class="input--upload--text">
+        ჩააგდეთ ფაილი აქ ან <span>აირჩიეთ ფაილი</span>
+      </p>
+    </label>
+    <input
+      class="image-upload-input--hidden"
+      id="img--input"
+      type="file"
+      (change)="onFileSelected($event)"
+    />
+    <div *ngIf="image" class="img--uploaded--placeholder">
+      <div class="placeholder--wrapper">
+        <img src="../../../assets/gallery--preview.png" alt="Uploaded Image" />
+        <span class="img--name">{{ imageName }}</span>
+      </div>
+      <span class="close--btn" (click)="removeImage()">X</span>
+    </div>
+    <div class="title" *ngIf="title">{{ title }}</div>
+  </div>
+  <div class="author--title--wrapper">
+    <div class="form--author container--width">
+      <label for="author--inp">ავტორი *</label>
+      <input
+        id="author--inp"
+        placeholder="შეიყვნეთ ავტორი"
+        type="text"
+        class="author--input"
+      />
+      <p class="validation--1"><span class="dot"></span>მინიმუმ 4 სიმბოლო</p>
+      <p class="validation--2"><span class="dot"></span>მინიმუმ ორი სიტყვა</p>
+      <p class="validation--3">
+        <span class="dot"></span>მხოლოდ ქართული სიმბოლოები
+      </p>
+    </div>
+    <div class="form--title container--width">
+      <label for="title--inp">სათური *</label>
+      <input
+        id="title--inp"
+        placeholder="შეიყვნეთ სათაური"
+        type="text"
+        class="title--input"
+      />
+      <p class="validation--1"><span class="dot"></span>მინიმუმ 2 სიმბოლო</p>
+    </div>
+  </div>
+  <div class="description--wrapper">
+    <label class="desc--from--label" for="desc--from">აღწერა *</label>
+    <textarea
+      class="form-txt-area"
+      id="desc--from"
+      name=""
+      id=""
+      cols="30"
+      rows="10"
+      placeholder="შეიყვნანეთ აღწერა"
+    ></textarea>
+    <p>მინიმუმ 4 სიმბოლო</p>
+  </div>
+  <div class="date--category--wrapper">
+    <div class="date-form container--width">
+      <label for="date-input">გამოქვეყნების თარიღი *</label>
+      <mat-form-field style="border-radius: 12px" class="example-full-width">
+        <mat-label style="padding-left: 30px">Choose a date</mat-label>
+        <mat-datepicker-toggle
+          style="position: absolute; left: 0px; top: 10px"
+          matIconSuffix
+          [for]="picker"
+        >
+          <mat-icon matDatepickerToggleIcon
+            ><img src="../../../assets/calendar.png" alt=""
+          /></mat-icon>
+        </mat-datepicker-toggle>
+        <input style="padding-left: 30px" matInput [matDatepicker]="picker" />
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="category-form container--width">
+      <label for="category-input">კატეგორია *</label>
+      <input type="text" name="" id="category-input" />
+    </div>
+  </div>
+  <div class="email-form container--width">
+    <label for="email-input">ელ-ფოსტა</label>
+    <input
+      placeholder="Example@redbery.ge"
+      type="email"
+      name=""
+      id="email-input"
+    />
+  </div>
+</form>

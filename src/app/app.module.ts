@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomeModule } from './home/home.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NewBlogModule } from './new-blog/new-blog.module';
 
 @NgModule({
   declarations: [AppComponent, PageNotFoundComponent],
@@ -14,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     HomeModule,
     BrowserAnimationsModule,
+    NewBlogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
