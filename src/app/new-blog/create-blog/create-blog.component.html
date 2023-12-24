@@ -1,4 +1,7 @@
-<form action="">
+<form [formGroup]="blogCreateForm" (ngSubmit)="createBlog()">
+  {{ blogCreateForm.get("author")?.touched }} -
+  {{ blogCreateForm.get("author")?.dirty }}
+  {{ blogCreateForm.get("author")?.hasError("required") }}
   <div
     class="image-upload-container"
     (dragover)="onDragOver($event)"
@@ -15,6 +18,7 @@
     </label>
     <input
       class="image-upload-input--hidden"
+      formControlName="image"
       id="img--input"
       type="file"
       (change)="onFileSelected($event)"
@@ -32,6 +36,7 @@
     <div class="form--author container--width">
       <label for="author--inp">ავტორი *</label>
       <input
+        formControlName="author"
         id="author--inp"
         placeholder="შეიყვნეთ ავტორი"
         type="text"
@@ -46,6 +51,7 @@
     <div class="form--title container--width">
       <label for="title--inp">სათური *</label>
       <input
+        formControlName="title"
         id="title--inp"
         placeholder="შეიყვნეთ სათაური"
         type="text"
@@ -57,10 +63,10 @@
   <div class="description--wrapper">
     <label class="desc--from--label" for="desc--from">აღწერა *</label>
     <textarea
+      formControlName="description"
       class="form-txt-area"
       id="desc--from"
       name=""
-      id=""
       cols="30"
       rows="10"
       placeholder="შეიყვნანეთ აღწერა"
@@ -81,22 +87,44 @@
             ><img src="../../../assets/calendar.png" alt=""
           /></mat-icon>
         </mat-datepicker-toggle>
-        <input style="padding-left: 30px" matInput [matDatepicker]="picker" />
+        <input
+          id="date-input"
+          formControlName="submitDate"
+          style="padding-left: 30px"
+          matInput
+          [matDatepicker]="picker"
+        />
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
     <div class="category-form container--width">
       <label for="category-input">კატეგორია *</label>
-      <input type="text" name="" id="category-input" />
+      <input
+        formControlName="category"
+        type="text"
+        name=""
+        id="category-input"
+      />
     </div>
   </div>
   <div class="email-form container--width">
     <label for="email-input">ელ-ფოსტა</label>
     <input
+      formControlName="email"
       placeholder="Example@redbery.ge"
       type="email"
       name=""
       id="email-input"
     />
+  </div>
+  <div class="container--btn">
+    <button
+      [disabled]="!blogCreateForm.valid"
+      [style.backgroundColor]="blogCreateForm.valid ? '#5d37f3' : 'white'"
+      class="submit--btn"
+      type="submit"
+    >
+      გამოქვეყნება
+    </button>
   </div>
 </form>

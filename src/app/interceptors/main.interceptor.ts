@@ -24,8 +24,7 @@ export class MainInterceptor implements HttpInterceptor {
         'Content-Type': 'application/json',
       },
     });
-    console.log('Request URL:', authRequest.url);
-    console.log('Request Headers:', authRequest.headers);
+
     return next.handle(authRequest);
   }
 }
