@@ -7,7 +7,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HomeModule } from './home/home.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NewBlogModule } from './new-blog/new-blog.module';
-
+import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MainInterceptor } from './interceptors/main.interceptor';
 @NgModule({
   declarations: [AppComponent, PageNotFoundComponent],
   imports: [
@@ -16,8 +18,15 @@ import { NewBlogModule } from './new-blog/new-blog.module';
     HomeModule,
     BrowserAnimationsModule,
     NewBlogModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MainInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

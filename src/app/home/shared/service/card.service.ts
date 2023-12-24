@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ICardItem, IcardWithEmail } from '../dto/card-item.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/app/environment/environment';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -93,6 +96,7 @@ export class CardService {
       author: 'გელა გელაშვილი',
     },
   ];
+  APIURL!: string;
   cardItemWithEmailMockData: IcardWithEmail[] = [
     {
       id: 1,
@@ -186,7 +190,20 @@ export class CardService {
       email: 'gigagiorgadze@redberry.ge',
     },
   ];
-  constructor() {}
+  constructor(private httpClient: HttpClient) {
+    this.APIURL = environment.apiUrl;
+    console.log(this.getCards2());
+  }
+  async getCards2() {
+    try {
+      const request = await firstValueFrom(
+        this.httpClient.get(`${this.APIURL}/blogs`, {})
+      );
+      return request;
+    } catch (error) {
+      throw error;
+    }
+  }
   getCards() {
     return [...this.cardItemWithEmailMockData];
   }
