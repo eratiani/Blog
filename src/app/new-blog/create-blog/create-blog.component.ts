@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ISortItem } from 'src/app/home/shared/dto/sort-item.model';
+import { SorterService } from 'src/app/home/shared/service/sorter.service';
 
 @Component({
   selector: 'app-create-blog',
@@ -13,10 +15,20 @@ import {
 })
 export class CreateBlogComponent implements OnInit {
   @Input() title: string | undefined;
+  mockData!: ISortItem[];
   image: string | undefined;
   imageName!: string | undefined;
   blogCreateForm!: FormGroup;
-  constructor(private formBuilder: FormBuilder) {}
+  @ViewChild('categoriesList', { static: false }) categoriesList:
+    | ElementRef
+    | undefined;
+  isRotated: boolean = false;
+  constructor(
+    private formBuilder: FormBuilder,
+    private sorterService: SorterService
+  ) {
+    this.mockData = [...sorterService.mockData];
+  }
   ngOnInit(): void {
     this.blogCreateForm = this.formBuilder.group({
       image: [null, [Validators.required]],
@@ -31,18 +43,18 @@ export class CreateBlogComponent implements OnInit {
       ],
       title: [null, [Validators.minLength(2), Validators.required]],
       description: [null, [Validators.minLength(4), Validators.required]],
-      submitDate: [null, [Validators.minLength(8), Validators.required]],
-      category: [null, [Validators.minLength(8), Validators.required]],
-      email: [null, [Validators.minLength(8), Validators.required]],
+      submitDate: [null, [Validators.required]],
+      category: [null, [Validators.required]],
+      email: [null, [Validators.required]],
     });
   }
   onDragOver(event: Event) {
     event.preventDefault();
   }
 
-  onDrop(event: any) {
+  onDrop(event: DragEvent) {
     event.preventDefault();
-    this.handleFile(event.dataTransfer.files);
+    this.handleFile(event.dataTransfer!.files);
   }
 
   onFileSelected(event: any) {
@@ -121,5 +133,25 @@ export class CreateBlogComponent implements OnInit {
         this.blogCreateForm.get(`${formElement}`)?.touched
       ? '#14D81C'
       : '';
+  }
+  onAddCategory(event: MouseEvent) {
+    const clickedElement = event.target as HTMLElement;
+
+    const dataId = clickedElement.getAttribute('data-id');
+
+    if (dataId !== null) {
+      const categoryId = parseInt(dataId, 10);
+      const category = this.mockData.filter(
+        (data) => data.id === categoryId
+      )[0];
+      const clickedElement = event.target as HTMLElement;
+      clickedElement.classList.toggle('green');
+    }
+  }
+  onOpenSelect() {
+    if (this.categoriesList) {
+      this.isRotated = !this.isRotated;
+      this.categoriesList.nativeElement.classList.toggle('disNone');
+    }
   }
 }

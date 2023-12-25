@@ -127,13 +127,14 @@
   <div class="date--category--wrapper">
     <div class="date-form container--width">
       <label for="date-input">გამოქვეყნების თარიღი *</label>
-      <mat-form-field style="border-radius: 12px" class="example-full-width">
-        <mat-label style="padding-left: 30px">Choose a date</mat-label>
-        <mat-datepicker-toggle
-          style="position: absolute; left: 0px; top: 10px"
-          matIconSuffix
-          [for]="picker"
-        >
+      <mat-form-field
+        appHighlight
+        [bg]="true"
+        [red]="checkForInvalid('submitDate') ?? false"
+        class="example-full-width"
+      >
+        <mat-label>Choose a date</mat-label>
+        <mat-datepicker-toggle matIconSuffix [for]="picker">
           <mat-icon matDatepickerToggleIcon
             ><img src="../../../assets/calendar.png" alt=""
           /></mat-icon>
@@ -149,8 +150,40 @@
       </mat-form-field>
     </div>
     <div class="category-form container--width">
-      <label for="category-input">კატეგორია *</label>
+      <h3 class="label--categories" (click)="onOpenSelect()">კატეგორია *</h3>
+      <div
+        appHighlight
+        [bg]="true"
+        [red]="checkForInvalid('categories') ?? false"
+        (click)="onOpenSelect()"
+        class="selected--categories"
+      >
+        <div class="palceholder">
+          <div class="selected--categories--img--wrapper">
+            <img
+              [class.rotate]="isRotated"
+              src="../../../assets/arrow--down.png"
+              alt="arrow"
+              class="selected--categories--img"
+            />
+          </div>
+        </div>
+      </div>
+      <div #categoriesList class="container-categories disNone">
+        <ul class="categories" (click)="onAddCategory($event)">
+          <li
+            class="category--list--item"
+            *ngFor="let item of mockData"
+            [style.backgroundColor]="item.background_color"
+            [style.color]="item.text_color"
+            [attr.data-id]="item.id"
+          >
+            {{ item.title }}
+          </li>
+        </ul>
+      </div>
       <input
+        style="display: none"
         formControlName="category"
         type="text"
         name=""
