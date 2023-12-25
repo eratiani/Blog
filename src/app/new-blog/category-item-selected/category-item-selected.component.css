@@ -1,0 +1,12 @@
+.category--selected--list--item {
+  list-style: none;
+  min-width: 30px;
+  padding: 8px 12px 8px 12px;
+  border-radius: 30px;
+  z-index: 5;
+  white-space: nowrap;
+}
+.remove--btn {
+  color: white;
+  cursor: pointer;
+}

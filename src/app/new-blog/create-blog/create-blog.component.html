@@ -1,9 +1,4 @@
 <form [formGroup]="blogCreateForm" (ngSubmit)="createBlog()">
-  {{ checkForError("author", "minlength") }} -
-  {{ checkForError("author", "required") ?? false }}
-  {{
-    checkForError("author", "minLength") || checkForError("author", "required")
-  }}
   <div
     class="image-upload-container"
     (dragover)="onDragOver($event)"
@@ -151,23 +146,30 @@
     </div>
     <div class="category-form container--width">
       <h3 class="label--categories" (click)="onOpenSelect()">კატეგორია *</h3>
-      <div
+      <ul
         appHighlight
         [bg]="true"
-        [red]="checkForInvalid('categories') ?? false"
+        [red]="checkForError('category', 'required')"
         (click)="onOpenSelect()"
         class="selected--categories"
       >
-        <div class="palceholder">
-          <div class="selected--categories--img--wrapper">
-            <img
-              [class.rotate]="isRotated"
-              src="../../../assets/arrow--down.png"
-              alt="arrow"
-              class="selected--categories--img"
-            />
-          </div>
-        </div>
+        <app-category-item-selected
+          *ngFor="let item of categoryData"
+          [id]="item.id"
+          [title]="item.title"
+          [background_color]="item.background_color"
+          [text_color]="item.text_color"
+          (deleteClicked)="removeCategory($event)"
+        ></app-category-item-selected>
+      </ul>
+
+      <div (click)="onOpenSelect()" class="selected--categories--img--wrapper">
+        <img
+          [class.rotate]="isRotated"
+          src="../../../assets/arrow--down.png"
+          alt="arrow"
+          class="selected--categories--img"
+        />
       </div>
       <div #categoriesList class="container-categories disNone">
         <ul class="categories" (click)="onAddCategory($event)">
@@ -194,6 +196,9 @@
   <div class="email-form container--width">
     <label for="email-input">ელ-ფოსტა</label>
     <input
+      appHighlight
+      [bg]="true"
+      [red]="checkForInvalid('email') ?? false"
       formControlName="email"
       placeholder="Example@redbery.ge"
       type="email"

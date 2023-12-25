@@ -1,0 +1,9 @@
+<li
+  class="category--selected--list--item"
+  [style.backgroundColor]="background_color"
+  [style.color]="text_color"
+  [attr.data-id]="id"
+>
+  {{ title }}
+  <span class="remove--btn" (click)="onRemoveCategory($event)">X</span>
+</li>

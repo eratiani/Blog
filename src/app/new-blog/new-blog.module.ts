@@ -12,12 +12,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HighlightDirective } from './shared/directive/highlight.directive';
+import { CategoryItemSelectedComponent } from './category-item-selected/category-item-selected.component';
 @NgModule({
   declarations: [
     CreateBlogComponent,
     BackBtnComponent,
     NewBlogFormViewComponent,
     HighlightDirective,
+    CategoryItemSelectedComponent,
   ],
   imports: [
     CommonModule,
