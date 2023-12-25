@@ -12,7 +12,12 @@ p {
   margin-bottom: 8px;
 }
 /* //////// general rule for all p */
-
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
 .container--width {
   width: 288px;
 }

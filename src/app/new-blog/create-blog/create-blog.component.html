@@ -1,7 +1,9 @@
 <form [formGroup]="blogCreateForm" (ngSubmit)="createBlog()">
-  {{ blogCreateForm.get("author")?.touched }} -
-  {{ blogCreateForm.get("author")?.dirty }}
-  {{ blogCreateForm.get("author")?.hasError("required") }}
+  {{ checkForError("author", "minlength") }} -
+  {{ checkForError("author", "required") ?? false }}
+  {{
+    checkForError("author", "minLength") || checkForError("author", "required")
+  }}
   <div
     class="image-upload-container"
     (dragover)="onDragOver($event)"
@@ -36,33 +38,76 @@
     <div class="form--author container--width">
       <label for="author--inp">ავტორი *</label>
       <input
+        appHighlight
+        [bg]="true"
+        [red]="checkForInvalid('author') ?? false"
         formControlName="author"
         id="author--inp"
         placeholder="შეიყვნეთ ავტორი"
         type="text"
         class="author--input"
       />
-      <p class="validation--1"><span class="dot"></span>მინიმუმ 4 სიმბოლო</p>
-      <p class="validation--2"><span class="dot"></span>მინიმუმ ორი სიტყვა</p>
-      <p class="validation--3">
-        <span class="dot"></span>მხოლოდ ქართული სიმბოლოები
+      <p
+        [style.color]="redOrGreenColor('author', 'minlength')"
+        class="validation--1"
+      >
+        <span
+          [style.backgroundColor]="redOrGreenColor('author', 'minlength')"
+          class="dot"
+        ></span
+        >მინიმუმ 4 სიმბოლო
+      </p>
+      <p
+        [style.color]="redOrGreenColor('author', 'minTwoWords')"
+        class="validation--2"
+      >
+        <span
+          [style.backgroundColor]="redOrGreenColor('author', 'minTwoWords')"
+          class="dot"
+        ></span
+        >მინიმუმ ორი სიტყვა
+      </p>
+      <p
+        [style.color]="redOrGreenColor('author', 'georgianSymbols')"
+        class="validation--3"
+      >
+        <span
+          [style.backgroundColor]="redOrGreenColor('author', 'georgianSymbols')"
+          class="dot"
+        ></span
+        >მხოლოდ ქართული სიმბოლოები
       </p>
     </div>
     <div class="form--title container--width">
       <label for="title--inp">სათური *</label>
       <input
+        appHighlight
+        [bg]="true"
+        [red]="checkForInvalid('title') ?? false"
         formControlName="title"
         id="title--inp"
         placeholder="შეიყვნეთ სათაური"
         type="text"
         class="title--input"
       />
-      <p class="validation--1"><span class="dot"></span>მინიმუმ 2 სიმბოლო</p>
+      <p
+        class="validation--1"
+        [style.color]="redOrGreenColor('title', 'minlength')"
+      >
+        <span
+          [style.backgroundColor]="redOrGreenColor('title', 'minlength')"
+          class="dot"
+        ></span
+        >მინიმუმ 2 სიმბოლო
+      </p>
     </div>
   </div>
   <div class="description--wrapper">
     <label class="desc--from--label" for="desc--from">აღწერა *</label>
     <textarea
+      appHighlight
+      [bg]="true"
+      [red]="checkForInvalid('description') ?? false"
       formControlName="description"
       class="form-txt-area"
       id="desc--from"
@@ -71,7 +116,13 @@
       rows="10"
       placeholder="შეიყვნანეთ აღწერა"
     ></textarea>
-    <p>მინიმუმ 4 სიმბოლო</p>
+    <p [style.color]="redOrGreenColor('description', 'minlength')">
+      <span
+        class="dot"
+        [style.backgroundColor]="redOrGreenColor('description', 'minlength')"
+      ></span
+      >მინიმუმ 4 სიმბოლო
+    </p>
   </div>
   <div class="date--category--wrapper">
     <div class="date-form container--width">
