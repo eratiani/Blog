@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
@@ -5,7 +6,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ICardItem } from 'src/app/home/shared/dto/card-item.model';
 import { ISortItem } from 'src/app/home/shared/dto/sort-item.model';
+import { CardService } from 'src/app/home/shared/service/card.service';
 import { SorterService } from 'src/app/home/shared/service/sorter.service';
 
 @Component({
@@ -26,7 +29,9 @@ export class CreateBlogComponent implements OnInit {
   isRotated: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
-    private sorterService: SorterService
+    private sorterService: SorterService,
+    private cardService: CardService,
+    private datePipe: DatePipe
   ) {
     this.mockData = [...sorterService.mockData];
   }
@@ -44,23 +49,31 @@ export class CreateBlogComponent implements OnInit {
       ],
       title: [null, [Validators.minLength(2), Validators.required]],
       description: [null, [Validators.minLength(4), Validators.required]],
-      submitDate: [null, [Validators.required]],
+      publish_date: [null, [Validators.required]],
       category: [null, [Validators.required]],
       email: [null],
     });
     const emailControl = this.blogCreateForm.get('email');
     if (!emailControl) return;
+    let firstTry = true;
+    console.log(firstTry);
+
     emailControl.valueChanges.subscribe((emailValue) => {
-      if (!emailControl) return;
+      if (!firstTry && emailValue.length === 0) {
+        emailControl.setValidators(null);
+        emailControl.updateValueAndValidity();
+        return;
+      } else if (!firstTry) {
+        return;
+      }
       if (emailValue && emailValue.trim() !== '') {
+        firstTry = !firstTry;
+        emailControl.setValue(emailValue, { emitEvent: false });
         emailControl.setValidators([
           Validators.required,
-          Validators.pattern(/@redbery\.ge$/),
+          Validators.pattern(/@redberry\.ge$/),
         ]);
-      } else {
-        emailControl.setValidators(Validators.email);
       }
-
       emailControl.updateValueAndValidity();
     });
   }
@@ -93,7 +106,58 @@ export class CreateBlogComponent implements OnInit {
     this.image = undefined;
     this.imageName = undefined;
   }
-  createBlog() {}
+  async blobToBinaryString(blob: Blob): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const result = reader.result as string;
+        resolve(result);
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      reader.readAsBinaryString(blob);
+    });
+  }
+  async createBlog() {
+    const image = this.converToBlob(this.image as string);
+    const categories = this.categoryData.map((e) => e.id);
+    const { title, description, publish_date, author, email } =
+      this.blogCreateForm.value;
+    const submitObj: any = {
+      image: image,
+      categories,
+      title,
+      description,
+      publish_date,
+      author,
+    };
+    if (email) {
+      submitObj.email = email;
+    }
+    submitObj.categories = `[${categories.join(',')}]`;
+    submitObj.publish_date = this.datePipe.transform(
+      publish_date,
+      'yyyy-MM-dd'
+    );
+    const imageFile = new File([submitObj.image], 'image.jpg', {
+      type: 'image/jpeg',
+    });
+    const formData = new FormData();
+    formData.append('author', submitObj.author);
+    formData.append('categories', submitObj.categories);
+    formData.append('description', submitObj.description);
+    formData.append('image', submitObj.image, 'image.jpeg');
+    formData.append('publish_date', submitObj.publish_date);
+    formData.append('title', submitObj.title);
+    formData.append('email', submitObj.email || '');
+    this.cardService.addCard(formData);
+
+    console.log(formData, submitObj);
+  }
   minTwoWordsValidator(
     control: AbstractControl
   ): { [key: string]: boolean } | null {
@@ -108,7 +172,15 @@ export class CreateBlogComponent implements OnInit {
 
     return null;
   }
-
+  converToBlob(imageData: string) {
+    const byteCharacters = atob(imageData.split(',')[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: 'image/jpeg' });
+  }
   georgianSymbolsValidator(control: AbstractControl) {
     const georgianPattern = /^[\u10A0-\u10FF\s]+$/;
 

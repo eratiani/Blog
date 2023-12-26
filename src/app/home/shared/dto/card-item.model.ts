@@ -6,6 +6,7 @@ export interface ICardItem {
   publish_date: string;
   categories: ICategories[];
   author: string;
+  email?: string;
 }
 interface ICategories {
   id: number;
@@ -13,6 +14,4 @@ interface ICategories {
   text_color: string;
   background_color: string;
 }
-export interface IcardWithEmail extends ICardItem {
-  email: string;
-}
+export interface IcardWithEmail extends ICardItem {}

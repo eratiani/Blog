@@ -3,6 +3,7 @@ import { ICardItem, IcardWithEmail } from '../dto/card-item.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/app/environment/environment';
 import { firstValueFrom } from 'rxjs';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -192,6 +193,7 @@ export class CardService {
   ];
   constructor(private httpClient: HttpClient) {
     this.APIURL = environment.apiUrl;
+    this.getCards2().then((data: any) => console.log(data.data));
     console.log(this.getCards2());
   }
   async getCards2() {
@@ -210,8 +212,18 @@ export class CardService {
   getCard(id: number) {
     return this.cardItemWithEmailMockData.filter((card) => card.id === id);
   }
-  addCard(card: IcardWithEmail) {
+  async addCard(card: FormData) {
+    // this.cardItemWithEmailMockData.push(card);
+
+    try {
+      const request = await firstValueFrom(
+        this.httpClient.post(`${this.APIURL}/blogs`, card)
+      );
+      return request;
+    } catch (error) {
+      throw error;
+    }
+
     // send request to server
-    this.cardItemWithEmailMockData.push(card);
   }
 }

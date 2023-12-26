@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CreateBlogComponent } from './create-blog/create-blog.component';
 import { BackBtnComponent } from './back-btn/back-btn.component';
 import { RouterModule } from '@angular/router';
@@ -31,7 +31,9 @@ import { CategoryItemSelectedComponent } from './category-item-selected/category
     MatNativeDateModule,
     MatIconModule,
     ReactiveFormsModule,
+    CommonModule,
   ],
   exports: [],
+  providers: [DatePipe],
 })
 export class NewBlogModule {}
