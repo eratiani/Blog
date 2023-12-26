@@ -65,16 +65,18 @@
 }
 .card--category--container {
   font-size: 12px;
-
   display: flex;
+  height: auto;
   justify-content: flex-start;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 0px;
   margin-bottom: 40px;
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
 .card--category--container > span {
   border-radius: 30px;
+  height: 28px;
   padding: 6px 10px 6px 10px;
 }
 .card--description {

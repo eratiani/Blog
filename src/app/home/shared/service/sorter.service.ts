@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
-import { ISortItem } from '../dto/sort-item.model';
+import { ISortItem, ISortItemDTO } from '../dto/sort-item.model';
+import { environment } from 'src/app/environment/environment';
+import { IResponseDTO } from '../dto/card-item.model';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SorterService {
+  APIURL!: string;
+
   mockData: ISortItem[] = [
     {
       id: 1,
@@ -91,5 +97,17 @@ export class SorterService {
       background_color: '#FA5757',
     },
   ];
-  constructor() {}
+  constructor(private httpClient: HttpClient) {
+    this.APIURL = environment.apiUrl;
+  }
+  async getCategories() {
+    try {
+      const request = (await firstValueFrom(
+        this.httpClient.get(`${this.APIURL}/categories`, {})
+      )) as ISortItemDTO;
+      return request;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

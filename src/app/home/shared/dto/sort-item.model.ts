@@ -4,3 +4,6 @@ export interface ISortItem {
   text_color: string;
   background_color: string;
 }
+export interface ISortItemDTO {
+  data: ISortItem[];
+}

@@ -1,3 +1,7 @@
+.border {
+  border: 2px solid black !important;
+  opacity: 8%;
+}
 .container--home {
   padding: 0 76px;
   background-color: #f3f2fa;

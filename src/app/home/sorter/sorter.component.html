@@ -1,11 +1,13 @@
 <div class="container-categories">
   <ul class="categories">
     <li
+      class="li"
       *ngFor="let item of sorterItems"
       [ngStyle]="{
         color: item.text_color,
         'background-color': item.background_color
       }"
+      [attr.data-id]="item.id"
     >
       {{ item.title }}
     </li>

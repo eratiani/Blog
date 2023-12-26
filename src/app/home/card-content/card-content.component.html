@@ -4,14 +4,18 @@
     <a [routerLink]="'../'" class="card--content--return--btn"
       ><img src="../../../assets/arrow-left-black.png" alt="return arrow"
     /></a>
-    <div class="container--card-content--inner">
+    <ng-template #loading> Loading... </ng-template>
+    <div
+      class="container--card-content--inner"
+      *ngIf="currentCard; else loading"
+    >
       <div class="container--image">
         <img src="{{ currentCard.image }}" alt="image" class="card--image" />
       </div>
       <h3 class="card--author">{{ currentCard.author }}</h3>
       <p class="card--date--email">
         {{ currentCard.publish_date | date : "dd.MM.yyyy" }}
-        <span class="dot">.</span>
+        <span *ngIf="currentCard.email" class="dot">.</span>
         {{ currentCard.email }}
       </p>
       <h2 class="card--title">{{ currentCard.title }}</h2>
@@ -23,7 +27,7 @@
             color: category.text_color,
             'background-color': category.background_color
           }"
-          >{{ category.name }}</span
+          >{{ category.title }}</span
         >
       </div>
       <p class="card--description">{{ currentCard.description }}</p>

@@ -8,9 +8,12 @@ export interface ICardItem {
   author: string;
   email?: string;
 }
+export interface IResponseDTO {
+  data: ICardItem[];
+}
 interface ICategories {
   id: number;
-  name: string;
+  title: string;
   text_color: string;
   background_color: string;
 }

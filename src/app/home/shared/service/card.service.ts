@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ICardItem, IcardWithEmail } from '../dto/card-item.model';
+import {
+  ICardItem,
+  IResponseDTO,
+  IcardWithEmail,
+} from '../dto/card-item.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/app/environment/environment';
-import { firstValueFrom } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
@@ -19,13 +23,13 @@ export class CardService {
       categories: [
         {
           id: 1,
-          name: 'Category name',
+          title: 'Category title',
           text_color: '#ffffff',
           background_color: '#000000',
         },
         {
           id: 1,
-          name: 'Category name2',
+          title: 'Category title2',
           text_color: 'red',
           background_color: '#000000',
         },
@@ -41,7 +45,7 @@ export class CardService {
       categories: [
         {
           id: 2,
-          name: 'Category name',
+          title: 'Category title',
           text_color: '#ffffff',
           background_color: '#000000',
         },
@@ -57,7 +61,7 @@ export class CardService {
       categories: [
         {
           id: 3,
-          name: 'Category name',
+          title: 'Category title',
           text_color: '#ffffff',
           background_color: '#000000',
         },
@@ -73,7 +77,7 @@ export class CardService {
       categories: [
         {
           id: 4,
-          name: 'Category name',
+          title: 'Category title',
           text_color: '#ffffff',
           background_color: '#000000',
         },
@@ -89,7 +93,7 @@ export class CardService {
       categories: [
         {
           id: 5,
-          name: 'Category name',
+          title: 'Category title',
           text_color: '#ffffff',
           background_color: '#000000',
         },
@@ -108,13 +112,13 @@ export class CardService {
       categories: [
         {
           id: 1,
-          name: 'Category name',
+          title: 'Category title',
           text_color: '#ffffff',
           background_color: '#000000',
         },
         {
           id: 1,
-          name: 'Category name2',
+          title: 'Category title2',
           text_color: 'red',
           background_color: '#000000',
         },
@@ -131,7 +135,7 @@ export class CardService {
       categories: [
         {
           id: 2,
-          name: 'Category name',
+          title: 'Category title',
           text_color: '#ffffff',
           background_color: '#000000',
         },
@@ -148,7 +152,7 @@ export class CardService {
       categories: [
         {
           id: 3,
-          name: 'Category name',
+          title: 'Category title',
           text_color: '#ffffff',
           background_color: '#000000',
         },
@@ -165,7 +169,7 @@ export class CardService {
       categories: [
         {
           id: 4,
-          name: 'Category name',
+          title: 'Category title',
           text_color: '#ffffff',
           background_color: '#000000',
         },
@@ -182,7 +186,7 @@ export class CardService {
       categories: [
         {
           id: 5,
-          name: 'Category name',
+          title: 'Category title',
           text_color: '#ffffff',
           background_color: '#000000',
         },
@@ -193,24 +197,28 @@ export class CardService {
   ];
   constructor(private httpClient: HttpClient) {
     this.APIURL = environment.apiUrl;
-    this.getCards2().then((data: any) => console.log(data.data));
-    console.log(this.getCards2());
   }
-  async getCards2() {
+  async getCards(): Promise<IResponseDTO> {
     try {
-      const request = await firstValueFrom(
+      const request = (await firstValueFrom(
         this.httpClient.get(`${this.APIURL}/blogs`, {})
-      );
+      )) as IResponseDTO;
       return request;
     } catch (error) {
       throw error;
     }
   }
-  getCards() {
-    return [...this.cardItemWithEmailMockData];
-  }
-  getCard(id: number) {
-    return this.cardItemWithEmailMockData.filter((card) => card.id === id);
+
+  async getCard(id: number) {
+    try {
+      const request = (await firstValueFrom(
+        this.httpClient.get(`${this.APIURL}/blogs/${id}`, {})
+      )) as ICardItem;
+      return request;
+    } catch (error) {
+      throw error;
+    }
+    // return this.cardItemWithEmailMockData.filter((card) => card.id === id);
   }
   async addCard(card: FormData) {
     // this.cardItemWithEmailMockData.push(card);

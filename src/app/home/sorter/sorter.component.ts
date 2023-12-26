@@ -11,6 +11,8 @@ export class SorterComponent implements OnInit {
   sorterItems: ISortItem[] = [];
   constructor(private sorterService: SorterService) {}
   ngOnInit(): void {
-    this.sorterItems = this.sorterService.mockData;
+    this.sorterService
+      .getCategories()
+      .then((res) => (this.sorterItems = [...res.data]));
   }
 }

@@ -10,6 +10,6 @@
       />
     </div>
   </div>
-  <app-sorter></app-sorter>
-  <app-cards></app-cards>
+  <app-sorter (click)="onSort($event)"></app-sorter>
+  <app-cards [catSelectedIdArr]="soretedCategoriesId"></app-cards>
 </div>
