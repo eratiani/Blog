@@ -34,20 +34,22 @@ export class AuthenticationFormComponent implements OnInit {
       ],
     });
   }
-  onSubmit() {
+  async onSubmit() {
     console.log(this.authenticationForm.invalid);
     if (this.authenticationForm.invalid) return;
-    const body = this.authenticationForm.value;
+    const body = await this.authenticationForm.value;
     console.log(this.authenticationForm.value);
     try {
-      this.authServ.checkEmail(body).then((res) => {
+      await this.authServ.checkEmail(body).then((res) => {
         this.authServ.isLogedIn.next(true);
+        this.dialogRef.close();
         this.OpenSuccessModal();
       });
     } catch (error) {
-      if (error) return;
+      console.log(error);
+
+      this.isValid = true;
     }
-    this.dialogRef.close();
   }
   validateEmail() {}
   OpenSuccessModal() {
