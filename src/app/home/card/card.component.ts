@@ -6,7 +6,10 @@ import { ICardItem } from '../shared/dto/card-item.model';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css'],
 })
-export class CardComponent {
+export class CardComponent implements OnInit {
   @Input() currentCard!: ICardItem;
   constructor() {}
+  ngOnInit(): void {
+    console.log(this.currentCard);
+  }
 }

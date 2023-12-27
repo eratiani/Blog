@@ -1,6 +1,6 @@
 .container--cards {
   display: grid;
-  grid-template-columns: repeat(3, 408px);
+  grid-template-columns: repeat(3, 3fr);
   gap: 32px;
   justify-content: space-between;
   padding: 0;
