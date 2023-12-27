@@ -4,6 +4,7 @@
 }
 .container--home {
   padding: 0 76px;
+  padding-bottom: 76px;
   background-color: #f3f2fa;
 }
 .sector--blog {

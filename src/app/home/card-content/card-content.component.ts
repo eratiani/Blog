@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CardService } from '../shared/service/card.service';
 import {
@@ -6,15 +6,18 @@ import {
   IResponseDTO,
   IcardWithEmail,
 } from '../shared/dto/card-item.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-card-content',
   templateUrl: './card-content.component.html',
   styleUrls: ['./card-content.component.css'],
 })
-export class CardContentComponent implements OnInit {
+export class CardContentComponent implements OnInit, OnDestroy {
   currentCard!: ICardItem;
   currentCards!: IcardWithEmail[];
+  cardsSubs!: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     private cardService: CardService
@@ -25,10 +28,15 @@ export class CardContentComponent implements OnInit {
 
       try {
         this.currentCard = await this.cardService.getCard(id);
-        const response = await this.cardService.getCards();
-        this.currentCards = [...response.data];
+        this.cardsSubs = this.cardService.cards.subscribe(
+          (data) => (this.currentCards = [...data])
+        );
       } catch (error) {}
       console.log(this.currentCard);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.cardsSubs.unsubscribe();
   }
 }

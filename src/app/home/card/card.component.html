@@ -24,7 +24,7 @@
       >
     </div>
     <p class="card--description">{{ currentCard.description }}</p>
-    <a class="card--see--fully" [routerLink]="'/Home/' + currentCard.id"
+    <a class="card--see--fully" (click)="onNavigateToCard($event)"
       >სრულად ნახვა
       <span class="card--see--fully--span"
         ><img
