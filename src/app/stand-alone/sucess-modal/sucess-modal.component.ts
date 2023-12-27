@@ -6,6 +6,7 @@ import {
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ButtonComponent } from '../button/button.component';
+import { AuthenticationService } from 'src/app/core/service/authentication.service';
 @Component({
   selector: 'app-sucess-modal',
   templateUrl: './sucess-modal.component.html',

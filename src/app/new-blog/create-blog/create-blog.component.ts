@@ -71,7 +71,7 @@ export class CreateBlogComponent implements OnInit {
         emailControl.setValue(emailValue, { emitEvent: false });
         emailControl.setValidators([
           Validators.required,
-          Validators.pattern(/@redberry\.ge$/),
+          Validators.pattern(/^[a-zA-Z]+@redberry\.ge$/),
         ]);
       }
       emailControl.updateValueAndValidity();
