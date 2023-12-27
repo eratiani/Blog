@@ -38,23 +38,35 @@
     <div class="container--arrows">
       <h3 class="slider--title">მსგავსი სტატიები</h3>
       <div class="slider--arrows">
-        <div class="left--arrow--wrapper">
+        <button
+          id="left"
+          [ngClass]="disableLeft ? 'disable' : ''"
+          [disabled]="disableLeft"
+          (click)="moveLeft($event)"
+          class="left--arrow--wrapper disable"
+        >
           <img
             src="../../../assets/Arrow next.png"
             alt="arrow left"
             class="left--arrow"
           />
-        </div>
-        <div class="right--arrow--wrapper">
+        </button>
+        <button
+          id="right"
+          [ngClass]="disableRight ? 'disable' : ''"
+          [disabled]="disableRight"
+          (click)="moveRight($event)"
+          class="right--arrow--wrapper"
+        >
           <img
             src="../../../assets/Arrow next.png"
             alt="arrow right"
             class="right--arrow"
           />
-        </div>
+        </button>
       </div>
     </div>
-    <div class="slider--wrapper">
+    <div class="slider--wrapper" id="slider">
       <app-slider
         *ngFor="let card of currentCards"
         [currentCard]="card"

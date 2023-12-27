@@ -9,13 +9,11 @@ import { Router } from '@angular/router';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css'],
 })
-export class CardComponent implements OnInit {
+export class CardComponent {
   @Input() currentCard!: ICardItem;
   categories!: ISortItem[];
   constructor(private cardService: CardService, private router: Router) {}
-  ngOnInit(): void {
-    console.log(this.currentCard);
-  }
+
   onNavigateToCard(event: Event) {
     const categoriesId = this.currentCard.categories.map((card) => card.id);
     event.preventDefault();

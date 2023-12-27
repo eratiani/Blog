@@ -89,9 +89,11 @@
 }
 .container--slider {
   width: 1288px;
+  margin: 0 auto;
 }
 .container--arrows {
   display: flex;
+  margin-bottom: 20px;
   justify-content: space-between;
 }
 .slider--wrapper {
@@ -116,7 +118,7 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: #e4e3eb;
+  background-color: #5d37f3;
   transform: rotateY(180deg);
 }
 .right--arrow--wrapper {
@@ -124,4 +126,7 @@
   height: 44px;
   border-radius: 50%;
   background-color: #5d37f3;
+}
+.disable {
+  background-color: #e4e3eb;
 }
