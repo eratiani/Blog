@@ -1,37 +1,54 @@
-/* //////// general rule for all labels */
-label {
-  font-size: 14px;
-  color: #1a1a1f;
-  font-weight: 500;
-  margin-bottom: 8px;
-}
-/* //////// general rule for all labels */
-/* //////// general rule for all p */
+/* General styling for labels and paragraphs */
+label,
 p {
   margin: 0;
   margin-bottom: 8px;
 }
-/* //////// general rule for all p */
+
+/* General styling for labels */
+label {
+  font-size: 14px;
+  color: #1a1a1f;
+  font-weight: 500;
+}
+
+/* General styling for paragraphs */
+p {
+  margin: 0;
+  margin-bottom: 8px;
+}
+
+/* Red text */
 .red {
   color: red;
 }
+
+/* Green background */
 .green {
   background-color: rgb(163, 175, 163);
   border-bottom: 2px solid green !important;
 }
+
+/* Container width */
 .container--width {
   width: 288px;
 }
+
+/* Image upload container */
 .image-upload-container {
   display: flex;
   flex-direction: column;
 }
+
+/* Upload title */
 .upload--title {
   font-size: 14px;
   line-height: 20px;
   color: #1a1a1f;
   margin-bottom: 8px;
 }
+
+/* Image upload input */
 .image-upload-input {
   width: 100%;
   height: 180px;
@@ -43,17 +60,25 @@ p {
   justify-content: center;
   align-items: center;
 }
+
+/* Hidden image upload input */
 .image-upload-input--hidden {
   display: none;
 }
+
+/* Image upload text wrapper */
 .input--img--wrapper {
   margin-bottom: 24px;
 }
+
+/* Upload text */
 .input--upload--text > span {
   color: #1a1a1f;
   text-decoration: underline;
   cursor: pointer;
 }
+
+/* Uploaded image placeholder */
 .img--uploaded--placeholder {
   width: 100%;
   padding: 16px;
@@ -65,17 +90,23 @@ p {
   border-radius: 12px;
   transition: all 2s;
 }
+
 .img--uploaded--placeholder:hover {
   border: 1px solid black;
 }
+
+/* Image name */
 .placeholder--wrapper {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
+
 .img--name {
   margin-left: 12px;
 }
+
+/* Close button */
 .close--btn {
   cursor: pointer;
   padding: 5px 8px;
@@ -83,23 +114,28 @@ p {
   border: 1px solid #f2f2fa;
   transition: all 1.5s, background-color 0.5s;
 }
+
 .close--btn:hover {
   transform: scale(150%);
   border: 1px solid #c7c7da;
   background-color: white;
 }
-.author--title--wrapper {
-  margin-top: 24px;
-}
+
+/* Author title wrapper */
 .author--title--wrapper {
   display: flex;
   justify-content: space-between;
+  margin-top: 24px;
   margin-bottom: 16px;
 }
+
+/* Author form */
 .form--author {
   display: flex;
   flex-direction: column;
 }
+
+/* Author input */
 #author--inp {
   padding: 12px;
   margin-bottom: 8px;
@@ -109,15 +145,20 @@ p {
   transition: all 1.5s;
   outline: none;
 }
+
 #author--inp:hover,
 #author--inp:focus {
   background-color: #e6e6f0;
   border: 1px solid #5d37f3;
 }
+
+/* Title form */
 .form--title {
   display: flex;
   flex-direction: column;
 }
+
+/* Title input */
 #title--inp {
   padding: 12px;
   margin-bottom: 8px;
@@ -127,11 +168,14 @@ p {
   transition: all 1.5s;
   outline: none;
 }
+
 #title--inp:focus,
 #title--inp:hover {
   background-color: #e6e6f0;
   border: 1px solid #5d37f3;
 }
+
+/* Dot styling */
 .dot {
   display: inline-block;
   width: 5px;
@@ -141,11 +185,15 @@ p {
   border-radius: 50%;
   background-color: #85858d;
 }
+
+/* Description wrapper */
 .description--wrapper {
   display: flex;
   flex-direction: column;
   margin-bottom: 16px;
 }
+
+/* Text area form */
 .form-txt-area {
   outline: none;
   margin-bottom: 8px;
@@ -155,21 +203,28 @@ p {
   padding: 12px 16px 16px 16px;
   transition: all 1.5s;
 }
+
 .form-txt-area:focus,
 .form-txt-area:hover {
   background-color: #e6e6f0;
   border: 1px solid #5d37f3;
 }
+
+/* Date and category wrapper */
 .date--category--wrapper {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 24px;
 }
+
+/* Date form */
 .date-form {
   display: flex;
   flex-direction: column;
 }
+
+/* Category form */
 .category-form {
   position: relative;
   padding: 0 !important;
@@ -177,10 +232,13 @@ p {
   flex-direction: column;
 }
 
+/* Email form */
 .email-form {
   display: flex;
   flex-direction: column;
 }
+
+/* Email input */
 #email-input {
   padding: 12px 16px;
   border-radius: 12px;
@@ -188,16 +246,19 @@ p {
   outline: none;
   transition: all 1.5s;
 }
+
 #email-input:focus,
 #email-input:hover {
   background-color: #e6e6f0;
   border: 1px solid #5d37f3;
 }
+
 .container--btn {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
+
 .container--btn > button {
   width: 288px;
   padding: 10px 20px 10px 20px;
@@ -208,12 +269,15 @@ p {
   margin-top: 40px;
   transition: all 0.7s;
 }
+
 .container--btn > button:hover {
   background-color: #4326bb;
 }
+
 .category-form {
   padding: 12px 16px;
 }
+
 .category--list--item {
   list-style: none;
   position: relative;
