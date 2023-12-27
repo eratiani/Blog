@@ -23,4 +23,7 @@ export class AuthenticationService {
       throw error;
     }
   }
+  isAuthenticated() {
+    return this.isLogedIn;
+  }
 }

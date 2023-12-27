@@ -6,6 +6,7 @@ import { BlogComponent } from './home/blog/blog.component';
 import { CardContentComponent } from './home/card-content/card-content.component';
 import { NewBlogFormViewComponent } from './new-blog/new-blog-form-view/new-blog-form-view.component';
 import { CardResolverResolver } from './resolver/card-resolver.resolver';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'Home', pathMatch: 'full' },
@@ -17,7 +18,11 @@ const routes: Routes = [
     },
   },
   { path: 'Home/:id', component: CardContentComponent },
-  { path: 'add', component: NewBlogFormViewComponent },
+  {
+    path: 'add',
+    component: NewBlogFormViewComponent,
+    canActivate: [AuthGuard],
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
 
