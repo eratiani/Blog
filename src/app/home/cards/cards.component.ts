@@ -43,16 +43,4 @@ export class CardsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.cardsSub.unsubscribe();
   }
-  private updateCards(): void {
-    this.cardService.getCards().then((res) => {
-      this.cards = [
-        ...res.data.filter((cardItem) =>
-          cardItem.categories.forEach((category) =>
-            this.catSelectedIdArr.includes(category.id)
-          )
-        ),
-      ];
-    });
-    console.log(this.cards);
-  }
 }
