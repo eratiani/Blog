@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ISortItem } from '../shared/dto/sort-item.model';
 import { SorterService } from '../shared/service/sorter.service';
 import { CardService } from '../shared/service/card.service';
 import { ICardItem } from '../shared/dto/card-item.model';
+import { LocalStorageService } from 'src/app/shared/local-storage.service';
+import { SorterComponent } from '../sorter/sorter.component';
 
 @Component({
   selector: 'app-blog',
@@ -12,15 +14,18 @@ import { ICardItem } from '../shared/dto/card-item.model';
 export class BlogComponent implements OnInit {
   soretedCategoriesId: number[] = [];
 
+  categoriesRef!: SorterComponent;
   categories: ISortItem[] = [];
   constructor(
     private sortService: SorterService,
-    private cardService: CardService
+    private cardService: CardService,
+    private localStorageS: LocalStorageService
   ) {}
   ngOnInit(): void {
-    this.sortService
-      .getCategories()
-      .then((data) => (this.categories = [...data.data]));
+    this.sortService.getCategories().then((data) => {
+      this.categories = [...data.data];
+    });
+    this.soretedCategoriesId = this.localStorageS.getItem('categoryId') || [];
   }
   onSort(event: Event) {
     const element = event.target as HTMLElement;
@@ -51,9 +56,14 @@ export class BlogComponent implements OnInit {
   }
   private updateCards(): void {
     this.cardService.getCards().then((res) => {
-      this.cardService.cards.next(
-        this.filterCards(res.data, this.soretedCategoriesId)
+      const filteredCards = this.filterCards(
+        res.data,
+        this.soretedCategoriesId
       );
+      console.log(filteredCards);
+      this.localStorageS.setItem('cards', filteredCards);
+      this.localStorageS.setItem('categoryId', this.soretedCategoriesId);
+      this.cardService.cards.next(filteredCards);
     });
   }
 }

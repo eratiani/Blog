@@ -1,6 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { SorterService } from '../shared/service/sorter.service';
 import { ISortItem } from '../shared/dto/sort-item.model';
+import { LocalStorageService } from 'src/app/shared/local-storage.service';
 
 @Component({
   selector: 'app-sorter',
@@ -9,10 +16,18 @@ import { ISortItem } from '../shared/dto/sort-item.model';
 })
 export class SorterComponent implements OnInit {
   sorterItems: ISortItem[] = [];
-  constructor(private sorterService: SorterService) {}
+  sorterItemsId: number[] = [];
+  constructor(
+    private sorterService: SorterService,
+    private localStorageS: LocalStorageService
+  ) {}
   ngOnInit(): void {
     this.sorterService
       .getCategories()
       .then((res) => (this.sorterItems = [...res.data]));
+    this.sorterItemsId = this.localStorageS.getItem('categoryId') || [];
+  }
+  isItemSelected(itemId: number): boolean {
+    return this.sorterItemsId.includes(itemId);
   }
 }

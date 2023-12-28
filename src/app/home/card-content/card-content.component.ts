@@ -17,7 +17,6 @@ export class CardContentComponent implements OnInit, OnDestroy {
   currentCard!: ICardItem;
   currentCards!: IcardWithEmail[];
   cardsSubs!: Subscription;
-  itemWidth: number = 408;
   disableLeft: boolean = true;
   disableRight: boolean = false;
   currentIndex: number = 0;
@@ -32,7 +31,7 @@ export class CardContentComponent implements OnInit, OnDestroy {
       try {
         this.currentCard = await this.cardService.getCard(id);
         this.cardsSubs = this.cardService.cards.subscribe((data) => {
-          this.currentCards = [...data];
+          this.currentCards = this.filterCards(data);
           console.log(this.currentCards.length);
 
           if (this.currentCards.length <= 3) {
@@ -42,11 +41,14 @@ export class CardContentComponent implements OnInit, OnDestroy {
       } catch (error) {}
     });
   }
+  filterCards(cards: ICardItem[]) {
+    return cards.filter((card) => new Date(card.publish_date) < new Date());
+  }
   moveLeft(event: Event) {
     const arrowLeft = document.getElementById('left') as HTMLElement;
 
     const arrowRight = document.getElementById('right') as HTMLElement;
-    if (this.currentIndex > 0) {
+    if (this.currentIndex >= 0) {
       const removedCard = this.currentCards.pop();
       this.currentIndex--;
       if (!removedCard) return;
@@ -55,10 +57,15 @@ export class CardContentComponent implements OnInit, OnDestroy {
       this.currentCards.unshift(removedCard);
       if (this.currentIndex === 0) {
         this.disableLeft = true;
+        if (this.currentCards.length > 3) {
+          arrowLeft.classList.contains('disable') ||
+            arrowLeft.classList.remove('disable');
+          this.disableRight = false;
+        }
         arrowLeft.classList.contains('disable') ||
           arrowLeft.classList.add('disable');
       }
-      if (this.currentIndex > 3) {
+      if (this.currentIndex >= 3) {
         this.disableRight = false;
       }
     }
@@ -77,16 +84,9 @@ export class CardContentComponent implements OnInit, OnDestroy {
       if (this.currentIndex === this.currentCards.length - 1) {
         this.disableRight = true;
       }
-    } else {
     }
   }
-  isLeftDisabled(): boolean {
-    return false;
-  }
 
-  isRightDisabled(): boolean {
-    return false;
-  }
   ngOnDestroy(): void {
     this.cardsSubs.unsubscribe();
   }

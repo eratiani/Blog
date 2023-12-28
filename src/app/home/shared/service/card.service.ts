@@ -26,7 +26,7 @@ export class CardService {
       const request = (await firstValueFrom(
         this.httpClient.get(`${this.APIURL}/blogs`, {})
       )) as IResponseDTO;
-      this.cards.next(request.data);
+      // this.cards.next(request.data);
       return request;
     } catch (error) {
       throw error;

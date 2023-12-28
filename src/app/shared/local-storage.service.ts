@@ -9,7 +9,7 @@ export class LocalStorageService {
   setItem<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
-  getItem(key: string): boolean {
+  getItem(key: string): any {
     const value = localStorage.getItem(key);
     return value ? JSON.parse(value) : null;
   }
