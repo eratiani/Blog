@@ -16,7 +16,10 @@
       placeholder="gigagiorgadze@redberry.ge"
     />
   </form>
-  <div *ngIf="checkForInvalid('email')" class="authentication--error--wrapper">
+  <div
+    *ngIf="checkForInvalid('email') || isValid"
+    class="authentication--error--wrapper"
+  >
     <div class="authentication--error--img-wrapper">
       <img
         class="authentication--error--img"
@@ -26,16 +29,7 @@
     </div>
     <p class="authentication--error">ელ-ფოსტა არ მოიძებნა</p>
   </div>
-  <div *ngIf="isValid" class="authentication--error--wrapper">
-    <div class="authentication--error--img-wrapper">
-      <img
-        class="authentication--error--img"
-        src="../../../assets/error-email.png"
-        alt="error"
-      />
-    </div>
-    <p class="authentication--error">ელ-ფოსტა არ მოიძებნა</p>
-  </div>
+
   <div>
     <button (click)="onSubmit()" class="authentication--ok">კარგი</button>
   </div>

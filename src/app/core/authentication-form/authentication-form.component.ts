@@ -7,6 +7,7 @@ import {
 } from '@angular/material/dialog';
 import { SucessModalComponent } from 'src/app/stand-alone/sucess-modal/sucess-modal.component';
 import { AuthenticationService } from '../service/authentication.service';
+import { LocalStorageService } from 'src/app/shared/local-storage.service';
 
 @Component({
   selector: 'app-authentication-form',
@@ -22,7 +23,8 @@ export class AuthenticationFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) data: { email: string },
     public matSuccess: MatDialog,
     private formBuilder: FormBuilder,
-    private authServ: AuthenticationService
+    private authServ: AuthenticationService,
+    private localStorage: LocalStorageService
   ) {
     this.email = data.email;
   }
@@ -35,13 +37,13 @@ export class AuthenticationFormComponent implements OnInit {
     });
   }
   async onSubmit() {
-    console.log(this.authenticationForm.invalid);
     if (this.authenticationForm.invalid) return;
     const body = await this.authenticationForm.value;
     console.log(this.authenticationForm.value);
     try {
-      await this.authServ.checkEmail(body).then((res) => {
+      await this.authServ.checkEmail(body).then((_res) => {
         this.authServ.isLogedIn.next(true);
+        this.localStorage.setItem('isLoggedIn', true);
         this.dialogRef.close();
         this.OpenSuccessModal();
       });
@@ -51,7 +53,6 @@ export class AuthenticationFormComponent implements OnInit {
       this.isValid = true;
     }
   }
-  validateEmail() {}
   OpenSuccessModal() {
     this.matSuccess.open(SucessModalComponent);
   }

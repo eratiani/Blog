@@ -5,6 +5,7 @@ import { AuthenticationFormComponent } from '../authentication-form/authenticati
 import { AuthenticationService } from '../service/authentication.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { LocalStorageService } from 'src/app/shared/local-storage.service';
 
 @Component({
   selector: 'app-header',
@@ -14,12 +15,13 @@ import { Observable } from 'rxjs';
 export class HeaderComponent implements OnInit {
   matDialogRef!: MatDialogRef<AuthenticationFormComponent>;
   email: string = '';
-  isLogedIn: Observable<boolean> = this.authServ.isLogedIn.asObservable();
-  isHomePage: Observable<boolean> = this.authServ.isHomePage.asObservable();
+  isLogedIn: boolean = false;
+  isHomePage: boolean = true;
   constructor(
     private matDialog: MatDialog,
     private authServ: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private localStorageS: LocalStorageService
   ) {}
   OpenModal() {
     this.matDialogRef = this.matDialog.open(AuthenticationFormComponent, {
@@ -31,12 +33,17 @@ export class HeaderComponent implements OnInit {
     });
   }
   onAddBlog() {
-    console.log(this.isLogedIn, this.isHomePage);
     this.authServ.isHomePage.next(false);
+    this.localStorageS.setItem('isHomePage', false);
     this.router.navigate(['./add']);
   }
   ngOnInit(): void {
-    this.isLogedIn = this.authServ.isLogedIn;
-    this.isHomePage = this.authServ.isHomePage;
+    this.authServ.isLogedIn.subscribe((val) => {
+      this.isLogedIn = this.localStorageS.getItem('isLoggedIn') || val;
+    });
+    this.authServ.isHomePage.subscribe((val) => {
+      this.isHomePage = this.localStorageS.getItem('isHomePage') || val;
+    });
+    // this.isHomePage = this.authServ.isHomePage.asObservable();
   }
 }

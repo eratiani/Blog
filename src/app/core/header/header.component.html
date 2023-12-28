@@ -3,12 +3,8 @@
     <img src="../../../assets/LOGO.png" alt="" class="logo" />
   </div>
   <div class="btn--wrapper">
-    <app-button *ngIf="!(isLogedIn | async)" (click)="OpenModal()"
-      >შესვლა</app-button
-    >
-    <app-button
-      *ngIf="(isHomePage | async) && (isLogedIn | async)"
-      (click)="onAddBlog()"
+    <app-button *ngIf="!isLogedIn" (click)="OpenModal()">შესვლა</app-button>
+    <app-button *ngIf="isHomePage && isLogedIn" (click)="onAddBlog()"
       >დაამატე ბლოგი</app-button
     >
   </div>
