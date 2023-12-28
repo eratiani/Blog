@@ -1,6 +1,5 @@
 import {
   Component,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -8,7 +7,6 @@ import {
 } from '@angular/core';
 import { CardService } from '../shared/service/card.service';
 import { ICardItem } from '../shared/dto/card-item.model';
-import { ISortItem } from '../shared/dto/sort-item.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from 'src/app/shared/local-storage.service';
@@ -34,7 +32,7 @@ export class CardsComponent implements OnInit, OnChanges, OnDestroy {
     this.cardService.getCards().then((res) => {
       const filteredCards = this.localStorageS.getItem('cards');
       if (filteredCards) {
-        this.cards = filteredCards;
+        this.cards = this.filterCards(filteredCards);
       } else {
         this.cards = this.route.snapshot.data['cards'].data || [...res.data];
         this.cards = this.filterCards(this.cards);

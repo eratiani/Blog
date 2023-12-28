@@ -42,7 +42,7 @@
           id="left"
           [ngClass]="disableLeft ? 'disable' : ''"
           [disabled]="disableLeft"
-          (click)="moveLeft($event)"
+          (click)="moveLeft()"
           class="left--arrow--wrapper disable"
         >
           <img
@@ -55,7 +55,7 @@
           id="right"
           [ngClass]="disableRight ? 'disable' : ''"
           [disabled]="disableRight"
-          (click)="moveRight($event)"
+          (click)="moveRight()"
           class="right--arrow--wrapper"
         >
           <img

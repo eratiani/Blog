@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/app/environment/environment';
 import { Observable, Subject, firstValueFrom } from 'rxjs';
 import { FormGroup } from '@angular/forms';
+import { LocalStorageService } from 'src/app/shared/local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,16 +18,21 @@ export class CardService {
 
   APIURL!: string;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private localStorageS: LocalStorageService
+  ) {
     this.APIURL = environment.apiUrl;
-    this.getCards();
+    const sortedCards = this.localStorageS.getItem('cards');
+    this.getCards().then((req) => {
+      this.cards.next(sortedCards || req.data);
+    });
   }
   async getCards(): Promise<IResponseDTO> {
     try {
       const request = (await firstValueFrom(
         this.httpClient.get(`${this.APIURL}/blogs`, {})
       )) as IResponseDTO;
-      // this.cards.next(request.data);
       return request;
     } catch (error) {
       throw error;

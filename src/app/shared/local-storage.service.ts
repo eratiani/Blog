@@ -13,4 +13,9 @@ export class LocalStorageService {
     const value = localStorage.getItem(key);
     return value ? JSON.parse(value) : null;
   }
+  deleteItem(key: string) {
+    if (this.getItem(key)) {
+      localStorage.removeItem(key);
+    } else return;
+  }
 }
