@@ -229,6 +229,7 @@ export class CreateBlogComponent implements OnInit, OnDestroy {
     if (!categoryInput) return;
     this.categoryData = [...this.categoryData.filter((e) => e.id != id)];
     this.checkCategoryLength(categoryInput);
+    this.localStorageS.setItem('category', this.categoryData);
   }
   ////category
   ////////img drag@ drop
