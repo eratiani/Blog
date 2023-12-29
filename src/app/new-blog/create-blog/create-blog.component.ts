@@ -1,22 +1,33 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { ICardItem } from 'src/app/home/shared/dto/card-item.model';
 import { ISortItem } from 'src/app/home/shared/dto/sort-item.model';
 import { CardService } from 'src/app/home/shared/service/card.service';
 import { SorterService } from 'src/app/home/shared/service/sorter.service';
+import { LocalStorageService } from 'src/app/shared/local-storage.service';
+import { SucessModalComponent } from 'src/app/stand-alone/sucess-modal/sucess-modal.component';
 
 @Component({
   selector: 'app-create-blog',
   templateUrl: './create-blog.component.html',
   styleUrls: ['./create-blog.component.css'],
 })
-export class CreateBlogComponent implements OnInit {
+export class CreateBlogComponent implements OnInit, OnDestroy {
   @Input() title: string | undefined;
   mockData!: ISortItem[];
   categoryData: ISortItem[] = [];
@@ -27,19 +38,33 @@ export class CreateBlogComponent implements OnInit {
     | ElementRef
     | undefined;
   isRotated: boolean = false;
+  formLocalStorage: ICardItem = {
+    id: 0,
+    title: '',
+    description: '',
+    image: '',
+    publish_date: '',
+    categories: [],
+    author: '',
+  };
+  subscriptions: Subscription[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private sorterService: SorterService,
     private cardService: CardService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private localStorageS: LocalStorageService,
+    public matSuccess: MatDialog
   ) {
-    this.mockData = [...sorterService.mockData];
+    sorterService
+      .getCategories()
+      .then((cat) => (this.mockData = [...cat.data]));
   }
   ngOnInit(): void {
     this.blogCreateForm = this.formBuilder.group({
       image: [null, [Validators.required]],
       author: [
-        null,
+        this.localStorageS.getItem('author') || null,
         [
           Validators.required,
           Validators.minLength(4),
@@ -47,17 +72,29 @@ export class CreateBlogComponent implements OnInit {
           this.georgianSymbolsValidator,
         ],
       ],
-      title: [null, [Validators.minLength(2), Validators.required]],
-      description: [null, [Validators.minLength(4), Validators.required]],
-      publish_date: [null, [Validators.required]],
-      category: [null, [Validators.required]],
-      email: [null],
+      title: [
+        this.localStorageS.getItem('title') || null,
+        [Validators.minLength(2), Validators.required],
+      ],
+      description: [
+        this.localStorageS.getItem('description') || null,
+        [Validators.minLength(4), Validators.required],
+      ],
+      publish_date: [
+        this.localStorageS.getItem('publish_date') || null,
+        [Validators.required],
+      ],
+      category: [
+        this.localStorageS.getItem('category') || null,
+        [Validators.required],
+      ],
+      email: [this.localStorageS.getItem('email') || null],
     });
+
     const emailControl = this.blogCreateForm.get('email');
     if (!emailControl) return;
     let firstTry = true;
-    console.log(firstTry);
-
+    this.categoryData = this.localStorageS.getItem('category') || [];
     emailControl.valueChanges.subscribe((emailValue) => {
       if (!firstTry && emailValue.length === 0) {
         emailControl.setValidators(null);
@@ -76,6 +113,40 @@ export class CreateBlogComponent implements OnInit {
       }
       emailControl.updateValueAndValidity();
     });
+
+    ///could not pre populate input type file with data from local storage
+    // this.image = this.localStorageS.getItem('img') || null;
+    this.imageName = this.localStorageS.getItem('imgName') || null;
+    this.valueChangeSub('author');
+    this.valueChangeSub('title');
+    this.valueChangeSub('description');
+    this.valueChangeSub('publish_date');
+
+    this.valueChangeSub('email');
+    this.triggerValidation();
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((s) => s.unsubscribe());
+  }
+  triggerValidation() {
+    Object.keys(this.blogCreateForm.controls).forEach((controlName) => {
+      const control = this.blogCreateForm.get(controlName);
+      console.log(control);
+
+      if (control) {
+        control.updateValueAndValidity();
+      }
+    });
+  }
+  valueChangeSub(title: string) {
+    const sub = this.blogCreateForm
+      .get(title)
+      ?.valueChanges.subscribe((nevVal) => {
+        this.localStorageS.setItem(title, nevVal);
+      });
+    if (sub) {
+      this.subscriptions.push(sub);
+    }
   }
   onDragOver(event: Event) {
     event.preventDefault();
@@ -94,9 +165,13 @@ export class CreateBlogComponent implements OnInit {
     if (files.length > 0) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.image = reader.result as string;
-        this.imageName = files[0].name;
-        console.log(this.image);
+        const img = reader.result as string;
+        const imgName = files[0].name;
+        this.image = img;
+        this.imageName = imgName;
+        this.formLocalStorage.image = this.image;
+        this.localStorageS.setItem('img', img);
+        this.localStorageS.setItem('imgName', imgName);
       };
       reader.readAsDataURL(files[0]);
     }
@@ -105,24 +180,12 @@ export class CreateBlogComponent implements OnInit {
     this.blogCreateForm.get('image')?.reset();
     this.image = undefined;
     this.imageName = undefined;
+    this.localStorageS.deleteItem('imgName');
+    this.localStorageS.deleteItem('img');
   }
-  async blobToBinaryString(blob: Blob): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
 
-      reader.onload = () => {
-        const result = reader.result as string;
-        resolve(result);
-      };
-
-      reader.onerror = (error) => {
-        reject(error);
-      };
-
-      reader.readAsBinaryString(blob);
-    });
-  }
   async createBlog() {
+    if (!this.blogCreateForm.valid) return;
     const image = this.converToBlob(this.image as string);
     const categories = this.categoryData.map((e) => e.id);
     const { title, description, publish_date, author, email } =
@@ -155,9 +218,17 @@ export class CreateBlogComponent implements OnInit {
     formData.append('title', submitObj.title);
     formData.append('email', submitObj.email || '');
     this.cardService.addCard(formData);
-
-    console.log(formData, submitObj);
+    this.matSuccess.open(SucessModalComponent);
+    this.localStorageS.deleteItem('category');
+    this.localStorageS.deleteItem('author');
+    this.localStorageS.deleteItem('description');
+    this.localStorageS.deleteItem('title');
+    this.localStorageS.deleteItem('publish_date');
+    this.localStorageS.deleteItem('img');
+    this.localStorageS.deleteItem('email');
+    this.localStorageS.deleteItem('imgName');
   }
+
   minTwoWordsValidator(
     control: AbstractControl
   ): { [key: string]: boolean } | null {
@@ -197,12 +268,7 @@ export class CreateBlogComponent implements OnInit {
         this.blogCreateForm.get(`${formElement}`)?.touched)
     );
   }
-  checkForEmpty(control: AbstractControl) {
-    if (control.value && control.value.length <= 0) {
-      return { empty: true };
-    }
-    return null;
-  }
+
   checkForError(formElement: string, error: string): boolean | undefined {
     return this.blogCreateForm.get(`${formElement}`)?.hasError(`${error}`);
   }
@@ -232,6 +298,8 @@ export class CreateBlogComponent implements OnInit {
       const category = this.mockData.filter(
         (data) => data.id === categoryId
       )[0];
+      console.log(category);
+
       const clickedElement = event.target as HTMLElement;
       clickedElement.classList.toggle('green');
       const itemAddedInd = this.categoryData.findIndex(
@@ -240,9 +308,12 @@ export class CreateBlogComponent implements OnInit {
       if (itemAddedInd !== -1) {
         this.categoryData.splice(itemAddedInd, 1);
         this.checkCategoryLength(categoryInput);
+        this.localStorageS.setItem('category', this.categoryData);
+
         return;
       }
       this.categoryData.push(category);
+      this.localStorageS.setItem('category', this.categoryData);
       this.checkCategoryLength(categoryInput);
     }
   }
