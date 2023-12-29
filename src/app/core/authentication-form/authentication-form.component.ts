@@ -38,18 +38,16 @@ export class AuthenticationFormComponent implements OnInit {
   }
   async onSubmit() {
     if (this.authenticationForm.invalid) return;
-    const body = await this.authenticationForm.value;
-    console.log(this.authenticationForm.value);
     try {
+      const body = await this.authenticationForm.value;
       await this.authServ.checkEmail(body).then((_res) => {
         this.authServ.isLogedIn.next(true);
         this.localStorage.setItem('isLoggedIn', true);
         this.dialogRef.close();
         this.OpenSuccessModal();
+        return 'sucess';
       });
     } catch (error) {
-      console.log(error);
-
       this.isValid = true;
     }
   }

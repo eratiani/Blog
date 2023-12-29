@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { CardService } from '../shared/service/card.service';
 import { ICardItem, IcardWithEmail } from '../shared/dto/card-item.model';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-slider',

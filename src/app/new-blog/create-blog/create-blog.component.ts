@@ -15,6 +15,7 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+
 import { ICardItem } from 'src/app/home/shared/dto/card-item.model';
 import { ISortItem } from 'src/app/home/shared/dto/sort-item.model';
 import { CardService } from 'src/app/home/shared/service/card.service';
@@ -90,54 +91,27 @@ export class CreateBlogComponent implements OnInit, OnDestroy {
       ],
       email: [this.localStorageS.getItem('email') || null],
     });
-
-    const emailControl = this.blogCreateForm.get('email');
-    if (!emailControl) return;
-    let firstTry = true;
+    this.addEmailValidator();
     this.categoryData = this.localStorageS.getItem('category') || [];
-    emailControl.valueChanges.subscribe((emailValue) => {
-      if (!firstTry && emailValue.length === 0) {
-        emailControl.setValidators(null);
-        emailControl.updateValueAndValidity();
-        return;
-      } else if (!firstTry) {
-        return;
-      }
-      if (emailValue && emailValue.trim() !== '') {
-        firstTry = !firstTry;
-        emailControl.setValue(emailValue, { emitEvent: false });
-        emailControl.setValidators([
-          Validators.required,
-          Validators.pattern(/^[a-zA-Z]+@redberry\.ge$/),
-        ]);
-      }
-      emailControl.updateValueAndValidity();
-    });
-
     ///could not pre populate input type file with data from local storage
     // this.image = this.localStorageS.getItem('img') || null;
     this.imageName = this.localStorageS.getItem('imgName') || null;
-    this.valueChangeSub('author');
-    this.valueChangeSub('title');
-    this.valueChangeSub('description');
-    this.valueChangeSub('publish_date');
+    this.addSubscriptions([
+      'author',
+      'title',
+      'description',
+      'publish_date',
+      'email',
+    ]);
 
-    this.valueChangeSub('email');
     this.triggerValidation();
   }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
-  triggerValidation() {
-    Object.keys(this.blogCreateForm.controls).forEach((controlName) => {
-      const control = this.blogCreateForm.get(controlName);
-      console.log(control);
 
-      if (control) {
-        control.updateValueAndValidity();
-      }
-    });
-  }
+  //////local storage
   valueChangeSub(title: string) {
     const sub = this.blogCreateForm
       .get(title)
@@ -148,41 +122,17 @@ export class CreateBlogComponent implements OnInit, OnDestroy {
       this.subscriptions.push(sub);
     }
   }
-  onDragOver(event: Event) {
-    event.preventDefault();
-  }
-
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    this.handleFile(event.dataTransfer!.files);
-  }
-
-  onFileSelected(event: any) {
-    this.handleFile(event.target.files);
-  }
-
-  private handleFile(files: FileList) {
-    if (files.length > 0) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const img = reader.result as string;
-        const imgName = files[0].name;
-        this.image = img;
-        this.imageName = imgName;
-        this.formLocalStorage.image = this.image;
-        this.localStorageS.setItem('img', img);
-        this.localStorageS.setItem('imgName', imgName);
-      };
-      reader.readAsDataURL(files[0]);
-    }
-  }
-  removeImage() {
-    this.blogCreateForm.get('image')?.reset();
-    this.image = undefined;
-    this.imageName = undefined;
-    this.localStorageS.deleteItem('imgName');
+  deleteLocalSItems() {
+    this.localStorageS.deleteItem('category');
+    this.localStorageS.deleteItem('author');
+    this.localStorageS.deleteItem('description');
+    this.localStorageS.deleteItem('title');
+    this.localStorageS.deleteItem('publish_date');
     this.localStorageS.deleteItem('img');
+    this.localStorageS.deleteItem('email');
+    this.localStorageS.deleteItem('imgName');
   }
+  //////local storage
 
   async createBlog() {
     if (!this.blogCreateForm.valid) return;
@@ -219,75 +169,10 @@ export class CreateBlogComponent implements OnInit, OnDestroy {
     formData.append('email', submitObj.email || '');
     this.cardService.addCard(formData);
     this.matSuccess.open(SucessModalComponent);
-    this.localStorageS.deleteItem('category');
-    this.localStorageS.deleteItem('author');
-    this.localStorageS.deleteItem('description');
-    this.localStorageS.deleteItem('title');
-    this.localStorageS.deleteItem('publish_date');
-    this.localStorageS.deleteItem('img');
-    this.localStorageS.deleteItem('email');
-    this.localStorageS.deleteItem('imgName');
+    this.deleteLocalSItems();
   }
 
-  minTwoWordsValidator(
-    control: AbstractControl
-  ): { [key: string]: boolean } | null {
-    const value = control.value as string;
-
-    if (value) {
-      const words = value.split(' ').filter((word) => word.trim() !== '');
-      if (words.length < 2) {
-        return { minTwoWords: true };
-      }
-    }
-
-    return null;
-  }
-  converToBlob(imageData: string) {
-    const byteCharacters = atob(imageData.split(',')[1]);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    return new Blob([byteArray], { type: 'image/jpeg' });
-  }
-  georgianSymbolsValidator(control: AbstractControl) {
-    const georgianPattern = /^[\u10A0-\u10FF\s]+$/;
-
-    if (control.value && !georgianPattern.test(control.value)) {
-      return { georgianSymbols: true };
-    }
-
-    return null;
-  }
-  checkForInvalid(formElement: string): boolean | undefined {
-    return (
-      this.blogCreateForm.get(`${formElement}`)?.invalid &&
-      (this.blogCreateForm.get(`${formElement}`)?.dirty ||
-        this.blogCreateForm.get(`${formElement}`)?.touched)
-    );
-  }
-
-  checkForError(formElement: string, error: string): boolean | undefined {
-    return this.blogCreateForm.get(`${formElement}`)?.hasError(`${error}`);
-  }
-  redOrGreenColor(
-    formElement: string,
-    error: string,
-    errorReq: string = 'required'
-  ) {
-    return this.checkForError(`${formElement}`, `${error}`) ||
-      this.checkForError(`${formElement}`, `${errorReq}`)
-      ? this.blogCreateForm.get(`${formElement}`)?.dirty ||
-        this.blogCreateForm.get(`${formElement}`)?.touched
-        ? '#EA1919'
-        : ''
-      : this.blogCreateForm.get(`${formElement}`)?.dirty ||
-        this.blogCreateForm.get(`${formElement}`)?.touched
-      ? '#14D81C'
-      : '';
-  }
+  ////category
   onAddCategory(event: MouseEvent) {
     const clickedElement = event.target as HTMLElement;
     const categoryInput = this.blogCreateForm.get('category');
@@ -298,7 +183,6 @@ export class CreateBlogComponent implements OnInit, OnDestroy {
       const category = this.mockData.filter(
         (data) => data.id === categoryId
       )[0];
-      console.log(category);
 
       const clickedElement = event.target as HTMLElement;
       clickedElement.classList.toggle('green');
@@ -346,4 +230,143 @@ export class CreateBlogComponent implements OnInit, OnDestroy {
     this.categoryData = [...this.categoryData.filter((e) => e.id != id)];
     this.checkCategoryLength(categoryInput);
   }
+  ////category
+  ////////img drag@ drop
+  onDragOver(event: Event) {
+    event.preventDefault();
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.handleFile(event.dataTransfer!.files);
+  }
+
+  onFileSelected(event: any) {
+    this.handleFile(event.target.files);
+  }
+
+  private handleFile(files: FileList) {
+    if (files.length > 0) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = reader.result as string;
+        const imgName = files[0].name;
+        this.image = img;
+        this.imageName = imgName;
+        this.formLocalStorage.image = this.image;
+        this.localStorageS.setItem('img', img);
+        this.localStorageS.setItem('imgName', imgName);
+      };
+      reader.readAsDataURL(files[0]);
+    }
+  }
+  removeImage() {
+    this.blogCreateForm.get('image')?.reset();
+    this.image = undefined;
+    this.imageName = undefined;
+    this.localStorageS.deleteItem('imgName');
+    this.localStorageS.deleteItem('img');
+  }
+  converToBlob(imageData: string) {
+    const byteCharacters = atob(imageData.split(',')[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: 'image/jpeg' });
+  }
+  ////////img drag@ drop
+
+  /////////////validators
+  minTwoWordsValidator(
+    control: AbstractControl
+  ): { [key: string]: boolean } | null {
+    const value = control.value as string;
+
+    if (value) {
+      const words = value.split(' ').filter((word) => word.trim() !== '');
+      if (words.length < 2) {
+        return { minTwoWords: true };
+      }
+    }
+
+    return null;
+  }
+
+  georgianSymbolsValidator(control: AbstractControl) {
+    const georgianPattern = /^[\u10A0-\u10FF\s]+$/;
+
+    if (control.value && !georgianPattern.test(control.value)) {
+      return { georgianSymbols: true };
+    }
+
+    return null;
+  }
+  checkForInvalid(formElement: string): boolean | undefined {
+    return (
+      this.blogCreateForm.get(`${formElement}`)?.invalid &&
+      (this.blogCreateForm.get(`${formElement}`)?.dirty ||
+        this.blogCreateForm.get(`${formElement}`)?.touched)
+    );
+  }
+
+  checkForError(formElement: string, error: string): boolean | undefined {
+    return this.blogCreateForm.get(`${formElement}`)?.hasError(`${error}`);
+  }
+  redOrGreenColor(
+    formElement: string,
+    error: string,
+    errorReq: string = 'required'
+  ) {
+    return this.checkForError(`${formElement}`, `${error}`) ||
+      this.checkForError(`${formElement}`, `${errorReq}`)
+      ? this.blogCreateForm.get(`${formElement}`)?.dirty ||
+        this.blogCreateForm.get(`${formElement}`)?.touched
+        ? '#EA1919'
+        : ''
+      : this.blogCreateForm.get(`${formElement}`)?.dirty ||
+        this.blogCreateForm.get(`${formElement}`)?.touched
+      ? '#14D81C'
+      : '';
+  }
+  addSubscriptions(arr: string[]) {
+    arr.forEach((el) => this.valueChangeSub(el));
+  }
+  addEmailValidator() {
+    const emailControl = this.blogCreateForm.get('email');
+    if (!emailControl) return;
+    let firstTry = true;
+    let tried = 0;
+    emailControl.valueChanges.subscribe((emailValue) => {
+      if (!firstTry && emailValue.length === 0) {
+        tried++;
+        if (tried > 2) return;
+        emailControl.setValidators(null);
+        emailControl.updateValueAndValidity();
+        firstTry = true;
+        return;
+      }
+      if (!firstTry) return;
+      if (emailValue && emailValue.trim() !== '') {
+        firstTry = false;
+        emailControl.setValue(emailValue, { emitEvent: false });
+        emailControl.setValidators([
+          Validators.required,
+          Validators.pattern(/^[a-zA-Z]+@redberry\.ge$/),
+        ]);
+        emailControl.updateValueAndValidity();
+      }
+    });
+  }
+  triggerValidation() {
+    Object.keys(this.blogCreateForm.controls).forEach((controlName) => {
+      const control = this.blogCreateForm.get(controlName);
+
+      if (control) {
+        control.updateValueAndValidity();
+      }
+    });
+  }
+  /////////////validators
 }

@@ -1,13 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CardService } from '../shared/service/card.service';
-import {
-  ICardItem,
-  IResponseDTO,
-  IcardWithEmail,
-} from '../shared/dto/card-item.model';
 import { Subscription } from 'rxjs';
-import { ISortItem } from '../shared/dto/sort-item.model';
+
+import { ICardItem, IcardWithEmail } from '../shared/dto/card-item.model';
+import { CardService } from '../shared/service/card.service';
 import { LocalStorageService } from 'src/app/shared/local-storage.service';
 
 @Component({
@@ -22,7 +18,6 @@ export class CardContentComponent implements OnInit, OnDestroy {
   disableLeft: boolean = true;
   disableRight: boolean = false;
   currentIndex: number = 0;
-  cardsLength: number = 0;
   constructor(
     private route: ActivatedRoute,
     private cardService: CardService,
@@ -36,7 +31,6 @@ export class CardContentComponent implements OnInit, OnDestroy {
       this.currentIndex = 0;
       try {
         this.currentCard = await this.cardService.getCard(id);
-        console.log(this.currentCard);
         this.cardsSubs = this.cardService.cards.subscribe((data) => {
           this.currentCards = this.filterCards(data, id);
           const catId = this.currentCard.categories.map((cat) => cat.id);
@@ -53,6 +47,7 @@ export class CardContentComponent implements OnInit, OnDestroy {
       } catch (error) {}
     });
   }
+
   filterCardsByCategory(cards: ICardItem[], category: number[]) {
     return cards.filter((cardItem) =>
       cardItem.categories.some((cat) => {
@@ -66,10 +61,9 @@ export class CardContentComponent implements OnInit, OnDestroy {
       (card) => new Date(card.publish_date) < new Date() && card.id !== id
     );
   }
+  //////////// slider
   moveLeft() {
     const arrowLeft = document.getElementById('left') as HTMLElement;
-    console.log(this.currentCards);
-
     const arrowRight = document.getElementById('right') as HTMLElement;
     if (this.currentIndex >= 0) {
       const removedCard = this.currentCards.pop();
@@ -95,8 +89,6 @@ export class CardContentComponent implements OnInit, OnDestroy {
   }
 
   moveRight() {
-    console.log(this.currentCards);
-
     const arrowLeft = document.getElementById('left') as HTMLElement;
     if (this.currentIndex < this.currentCards.length - 3) {
       this.currentIndex++;
@@ -111,6 +103,7 @@ export class CardContentComponent implements OnInit, OnDestroy {
       }
     }
   }
+  //////////// slider
 
   ngOnDestroy(): void {
     this.cardsSubs.unsubscribe();

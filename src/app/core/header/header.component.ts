@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SucessModalComponent } from 'src/app/stand-alone/sucess-modal/sucess-modal.component';
+import { Router } from '@angular/router';
+
 import { AuthenticationFormComponent } from '../authentication-form/authentication-form.component';
 import { AuthenticationService } from '../service/authentication.service';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { LocalStorageService } from 'src/app/shared/local-storage.service';
 
 @Component({
@@ -44,6 +43,5 @@ export class HeaderComponent implements OnInit {
     this.authServ.isHomePage.subscribe((val) => {
       this.isHomePage = this.localStorageS.getItem('isHomePage') || val;
     });
-    // this.isHomePage = this.authServ.isHomePage.asObservable();
   }
 }

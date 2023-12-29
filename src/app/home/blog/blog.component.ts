@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { ISortItem } from '../shared/dto/sort-item.model';
 import { SorterService } from '../shared/service/sorter.service';
 import { CardService } from '../shared/service/card.service';
@@ -27,6 +28,7 @@ export class BlogComponent implements OnInit {
     });
     this.soretedCategoriesId = this.localStorageS.getItem('categoryId') || [];
   }
+
   onSort(event: Event) {
     const element = event.target as HTMLElement;
     const sorterID = element.getAttribute('data-id');
@@ -60,7 +62,6 @@ export class BlogComponent implements OnInit {
         res.data,
         this.soretedCategoriesId
       );
-      console.log(filteredCards);
       this.localStorageS.setItem('cards', filteredCards);
       this.localStorageS.setItem('categoryId', this.soretedCategoriesId);
       this.cardService.cards.next(filteredCards);

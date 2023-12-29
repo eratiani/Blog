@@ -1,12 +1,6 @@
-import { Component, Inject } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
+import { Component } from '@angular/core';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ButtonComponent } from '../button/button.component';
-import { AuthenticationService } from 'src/app/core/service/authentication.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-sucess-modal',

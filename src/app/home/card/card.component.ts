@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { ICardItem } from '../shared/dto/card-item.model';
 import { ISortItem } from '../shared/dto/sort-item.model';
 import { CardService } from '../shared/service/card.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card',

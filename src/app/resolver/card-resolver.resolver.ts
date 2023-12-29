@@ -16,7 +16,6 @@ export class CardResolverResolver implements Resolve<IResponseDTO> {
   ) {}
 
   resolve() {
-    console.log(this.localStorageS.getItem('isLoggedIn'));
     this.localStorageS.getItem('isLoggedIn') &&
       this.headerService.isLogedIn.next(true);
     this.headerService.isHomePage.next(true);

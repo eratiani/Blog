@@ -5,10 +5,11 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import { CardService } from '../shared/service/card.service';
 import { ICardItem } from '../shared/dto/card-item.model';
-import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from 'src/app/shared/local-storage.service';
 
 @Component({
@@ -16,7 +17,7 @@ import { LocalStorageService } from 'src/app/shared/local-storage.service';
   templateUrl: './cards.component.html',
   styleUrls: ['./cards.component.css'],
 })
-export class CardsComponent implements OnInit, OnChanges, OnDestroy {
+export class CardsComponent implements OnInit, OnDestroy {
   catSelectedIdArr!: number[];
   cards: ICardItem[] = [];
   cardsSub!: Subscription;
@@ -38,18 +39,9 @@ export class CardsComponent implements OnInit, OnChanges, OnDestroy {
         this.cards = this.filterCards(this.cards);
       }
     });
-
-    // console.log(filteredCards);
   }
   filterCards(cards: ICardItem[]) {
     return cards.filter((card) => new Date(card.publish_date) < new Date());
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    // console.log(this.catSelectedIdArr);
-    // if (changes['catSelectedIdArr']) {
-    //   console.log(this.catSelectedIdArr);
-    //   // this.updateCards();
-    // }
   }
   ngOnDestroy(): void {
     this.cardsSub.unsubscribe();

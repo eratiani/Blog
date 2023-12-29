@@ -1,10 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { SorterService } from '../shared/service/sorter.service';
 import { ISortItem } from '../shared/dto/sort-item.model';
 import { LocalStorageService } from 'src/app/shared/local-storage.service';
