@@ -9,3 +9,6 @@
 .logo-wrapper {
   cursor: pointer;
 }
+.center-align {
+  justify-content: center;
+}

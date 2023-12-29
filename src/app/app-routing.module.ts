@@ -21,6 +21,7 @@ const routes: Routes = [
   {
     path: 'add',
     component: NewBlogFormViewComponent,
+
     canActivate: [AuthGuard],
   },
   { path: '**', component: PageNotFoundComponent },

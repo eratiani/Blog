@@ -15,6 +15,7 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from 'src/app/core/service/authentication.service';
 
 import { ICardItem } from 'src/app/home/shared/dto/card-item.model';
 import { ISortItem } from 'src/app/home/shared/dto/sort-item.model';
@@ -54,6 +55,7 @@ export class CreateBlogComponent implements OnInit, OnDestroy {
     private sorterService: SorterService,
     private cardService: CardService,
     private datePipe: DatePipe,
+    private authServ: AuthenticationService,
     private localStorageS: LocalStorageService,
     public matSuccess: MatDialog
   ) {
@@ -62,6 +64,8 @@ export class CreateBlogComponent implements OnInit, OnDestroy {
       .then((cat) => (this.mockData = [...cat.data]));
   }
   ngOnInit(): void {
+    this.authServ.isHomePage.next(false);
+    this.localStorageS.setItem('isHomePage', false);
     this.blogCreateForm = this.formBuilder.group({
       image: [null, [Validators.required]],
       author: [

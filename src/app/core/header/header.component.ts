@@ -33,7 +33,6 @@ export class HeaderComponent implements OnInit {
   }
   onAddBlog() {
     this.authServ.isHomePage.next(false);
-    this.localStorageS.setItem('isHomePage', false);
     this.router.navigate(['./add']);
   }
   ngOnInit(): void {

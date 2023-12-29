@@ -1,8 +1,8 @@
-<div class="container--header">
+<div class="container--header" [ngClass]="{ 'center-align': !isHomePage }">
   <div routerLink="/Home" class="logo-wrapper">
     <img src="../../../assets/LOGO.png" alt="" class="logo" />
   </div>
-  <div class="btn--wrapper">
+  <div *ngIf="isHomePage" class="btn--wrapper">
     <app-button *ngIf="!isLogedIn" (click)="OpenModal()">შესვლა</app-button>
     <app-button *ngIf="isHomePage && isLogedIn" (click)="onAddBlog()"
       >დაამატე ბლოგი</app-button
