@@ -1,0 +1,132 @@
+.container--page {
+  padding: 0 76px;
+  background-color: #f3f2fa;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.container--card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 98px;
+}
+.card--content--return--btn {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 24px;
+  background-color: #ffffff;
+}
+.card--content--return--btn > img {
+  max-width: 100%;
+}
+.container--card-content--inner {
+  width: 720px;
+  margin: 0 auto;
+}
+.container--image > img {
+  width: 100%;
+}
+.card--author {
+  font-size: 16px;
+  line-height: 20px;
+  margin-top: 40px;
+  margin-bottom: 8px;
+  color: #1a1a1f;
+}
+.card--date--email {
+  font-size: 12px;
+  line-height: 16px;
+  color: #85858d;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 0px;
+  margin-bottom: 24px;
+}
+.dot {
+  width: 3px;
+  height: 3px;
+  background-color: #85858d;
+  margin: 0 5px;
+  border-radius: 50%;
+}
+.card--title {
+  font-size: 20px;
+
+  line-height: 28px;
+  color: #1a1a1f;
+  margin-top: 0px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.card--category--container {
+  font-size: 12px;
+  display: flex;
+  height: auto;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 0px;
+  margin-bottom: 40px;
+  /* overflow-y: auto; */
+}
+.card--category--container > span {
+  border-radius: 30px;
+  height: 28px;
+  padding: 6px 10px 6px 10px;
+}
+.card--description {
+  font-size: 16px;
+  line-height: 28px;
+  color: #404049;
+  overflow: hidden;
+  margin-top: 0px;
+  margin-bottom: 16px;
+}
+.container--slider {
+  width: 1288px;
+  margin: 0 auto;
+}
+.container--arrows {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+.slider--wrapper {
+  display: flex;
+  gap: 32px;
+  justify-content: space-between;
+  padding: 0;
+  overflow: hidden;
+}
+.slider--arrows {
+  width: 112px;
+  display: flex;
+  justify-content: space-between;
+}
+.slider--arrows > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.left--arrow--wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #5d37f3;
+  transform: rotateY(180deg);
+}
+.right--arrow--wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #5d37f3;
+}
+.disable {
+  background-color: #e4e3eb;
+}

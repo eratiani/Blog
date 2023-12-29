@@ -1,0 +1,28 @@
+.border {
+  border: 2px solid black !important;
+  opacity: 8%;
+}
+.container--home {
+  padding: 0 76px;
+  padding-bottom: 76px;
+  background-color: #f3f2fa;
+}
+.sector--blog {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 64px;
+}
+.blog--title {
+  font-size: 64px;
+  color: #1a1a1f;
+  margin-top: 128px;
+  padding-left: 13px;
+}
+.blog--img--wrapper {
+  max-width: 624px;
+  max-height: 200px;
+  margin-top: 64px;
+}
+.blog--img--wrapper > img {
+  width: 100%;
+}

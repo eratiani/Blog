@@ -1,0 +1,36 @@
+<div class="container--authentication">
+  <div class="close--x--wrapper">
+    <span class="close--x" mat-dialog-close>x</span>
+  </div>
+
+  <h2 class="authentication--text">შესვლა</h2>
+  <form class="form-group" [formGroup]="authenticationForm">
+    <label class="form-label">ელ-ფოსტა</label>
+    <input
+      appHighlight2
+      [bg]="true"
+      [red]="checkForInvalid('email') ?? false"
+      formControlName="email"
+      type="text"
+      class="textbox"
+      placeholder="gigagiorgadze@redberry.ge"
+    />
+  </form>
+  <div
+    *ngIf="checkForInvalid('email') || isValid"
+    class="authentication--error--wrapper"
+  >
+    <div class="authentication--error--img-wrapper">
+      <img
+        class="authentication--error--img"
+        src="../../../assets/error-email.png"
+        alt="error"
+      />
+    </div>
+    <p class="authentication--error">ელ-ფოსტა არ მოიძებნა</p>
+  </div>
+
+  <div>
+    <button (click)="onSubmit()" class="authentication--ok">კარგი</button>
+  </div>
+</div>

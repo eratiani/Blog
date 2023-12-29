@@ -1,0 +1,14 @@
+.container--header {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  padding: 0 76px;
+  justify-content: space-between;
+  background-color: white;
+}
+.logo-wrapper {
+  cursor: pointer;
+}
+.center-align {
+  justify-content: center;
+}

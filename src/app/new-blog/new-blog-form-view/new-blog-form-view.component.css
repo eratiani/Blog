@@ -1,0 +1,22 @@
+.container--page {
+  padding: 33px 76px 65px 76px;
+  background-color: #fbfaff;
+  padding-top: 40px;
+  padding-bottom: 110px;
+}
+.container--form {
+  display: flex;
+
+  align-items: flex-start;
+}
+
+.container--form--inner {
+  width: 600px;
+  margin-left: 240px;
+}
+.title--form {
+  font-size: 32px;
+  line-height: 50px;
+  color: #1a1a1f;
+  margin-bottom: 40px;
+}

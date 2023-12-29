@@ -1,0 +1,15 @@
+<app-header></app-header>
+<div class="container--home">
+  <div class="sector--blog">
+    <h2 class="blog--title">ბლოგი</h2>
+    <div class="blog--img--wrapper">
+      <img
+        src="../../../assets/sec-1--bg.png"
+        alt="blog image"
+        class="blog--img"
+      />
+    </div>
+  </div>
+  <app-sorter (click)="onSort($event)"></app-sorter>
+  <app-cards></app-cards>
+</div>

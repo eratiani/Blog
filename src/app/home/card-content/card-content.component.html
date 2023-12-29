@@ -1,0 +1,76 @@
+<app-header></app-header>
+<div class="container--page">
+  <div class="container--card-content">
+    <a [routerLink]="'../'" class="card--content--return--btn"
+      ><img src="../../../assets/arrow-left-black.png" alt="return arrow"
+    /></a>
+    <ng-template #loading> Loading... </ng-template>
+    <div
+      class="container--card-content--inner"
+      *ngIf="currentCard; else loading"
+    >
+      <div class="container--image">
+        <img src="{{ currentCard.image }}" alt="image" class="card--image" />
+      </div>
+      <h3 class="card--author">{{ currentCard.author }}</h3>
+      <p class="card--date--email">
+        {{ currentCard.publish_date | date : "dd.MM.yyyy" }}
+        <span *ngIf="currentCard.email" class="dot">.</span>
+        {{ currentCard.email }}
+      </p>
+      <h2 class="card--title">{{ currentCard.title }}</h2>
+      <div class="card--category--container">
+        <span
+          class="card--category"
+          *ngFor="let category of currentCard.categories"
+          [ngStyle]="{
+            color: category.text_color,
+            'background-color': category.background_color
+          }"
+          >{{ category.title }}</span
+        >
+      </div>
+      <p class="card--description">{{ currentCard.description }}</p>
+    </div>
+  </div>
+
+  <div class="container--slider">
+    <div class="container--arrows">
+      <h3 class="slider--title">მსგავსი სტატიები</h3>
+      <div class="slider--arrows">
+        <button
+          id="left"
+          [ngClass]="disableLeft ? 'disable' : ''"
+          [disabled]="disableLeft"
+          (click)="moveLeft()"
+          class="left--arrow--wrapper disable"
+        >
+          <img
+            src="../../../assets/Arrow next.png"
+            alt="arrow left"
+            class="left--arrow"
+          />
+        </button>
+        <button
+          id="right"
+          [ngClass]="disableRight ? 'disable' : ''"
+          [disabled]="disableRight"
+          (click)="moveRight()"
+          class="right--arrow--wrapper"
+        >
+          <img
+            src="../../../assets/Arrow next.png"
+            alt="arrow right"
+            class="right--arrow"
+          />
+        </button>
+      </div>
+    </div>
+    <div class="slider--wrapper" id="slider">
+      <app-slider
+        *ngFor="let card of currentCards"
+        [currentCard]="card"
+      ></app-slider>
+    </div>
+  </div>
+</div>

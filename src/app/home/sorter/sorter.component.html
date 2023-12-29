@@ -1,0 +1,16 @@
+<div class="container-categories">
+  <ul #sorterCont class="categories" id="sorter">
+    <li
+      class="li"
+      *ngFor="let item of sorterItems"
+      [class.border]="isItemSelected(item.id)"
+      [ngStyle]="{
+        color: item.text_color,
+        'background-color': item.background_color
+      }"
+      [attr.data-id]="item.id"
+    >
+      {{ item.title }}
+    </li>
+  </ul>
+</div>
